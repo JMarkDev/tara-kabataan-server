@@ -16,16 +16,28 @@ const Events = sequelize.define("events" , {
         type: DataTypes.STRING(250),
         allowNull: false
     },
+    image: {
+        type: DataTypes.STRING(255),
+        allowNull: true
+    },
+    event_type: {
+        type: DataTypes.STRING(250),
+        allowNull: false
+    },
+    start_time: {
+        type: DataTypes.STRING(55),
+        allowNull: false
+    },
+    end_time: {
+        type: DataTypes.STRING(55),
+        allowNull: false
+    },
     start_date: {
         type: DataTypes.DATE,
         allowNull: false
     },
     end_date: {
         type: DataTypes.DATE,
-        allowNull: false
-    },
-    time: {
-        type: DataTypes.TIME,
         allowNull: false
     }, 
     location: {
@@ -36,26 +48,39 @@ const Events = sequelize.define("events" , {
         type: DataTypes.STRING(255),
         allowNull: true
     },
-    organizer_email: {
-        type: DataTypes.STRING(255),
-        allowNull: true
-    },
     max_attendees: {
-        type: DataTypes.NUMBER,
+        type: DataTypes.INTEGER,
         allowNull: false
     },
-    is_publish: {   
+    // is_publish: {   
+    //     type: DataTypes.STRING(55),
+    //     allowNull: true
+    // },
+    is_paid: {
         type: DataTypes.STRING(55),
+        allowNull: false
+    },
+    price: {
+        type: DataTypes.INTEGER(10, 2),
         allowNull: true
+    },
+    discount: {
+        type: DataTypes.INTEGER(10, 2),
+        allowNull: true
+   
     },
     created_at: {
         type: DataTypes.DATE,
-        allowNull: false
-    }, 
+        defaultValue: DataTypes.NOW,
+        allowNull: true,
+    },    
     updated_at: {
         type: DataTypes.DATE,
         allowNull: true
-    }
+    },
+}, {
+    timestamps: false,  // disable createdAt and updatedAt
+    timeZone: '+08:00', // set timezone to UTC+8
 });
 
 module.exports = Events
