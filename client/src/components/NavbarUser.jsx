@@ -1,12 +1,38 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import logo from '../assets/images/logo.jpg';
 import { Link, useLocation } from 'react-router-dom';
 import HamburgerButton from './HamburgerMenuButton/HamburgerButton';
+import Cookies from 'js-cookie';
+import api from '../api/api';
+import userIcon from '../assets/images/user.png';
 
 
 const NavbarUser = () => {
   const location = useLocation();
   const [mobileMenu, setMobileMenu] = useState(false);
+  const [userData, setUserData] = useState(false);
+  const [name, setName] = useState('');
+
+  const userId = Cookies.get('userId'); 
+
+  useEffect(() => {
+    if(userId) {
+      setUserData(true);
+    }
+  }, [userId])
+
+  useEffect(() => {
+    const getUserData = async () => {
+      try {
+        const response = await api.get(`/user/id/${userId}`);
+        setName(response.data.firstname)
+      } catch (error) {
+        console.log(error)
+      }
+    }
+
+    getUserData();
+  }, [userId])
 
   const closeMobileMenu = () => {
     setMobileMenu(false);
@@ -72,7 +98,17 @@ const NavbarUser = () => {
             </Link>
           </li>
         </ul>
-        <div className='flex gap-10'>
+        { userData ? (
+          <div className='flex gap-10'>
+            <h1 className='text-lg font-semibold text-center m-auto'>{name}</h1>
+            <img
+                className="w-8 h-8 rounded-full object-cover"
+                src={userIcon}
+                alt=""
+              />
+          </div>
+        ) : (
+          <div className='flex gap-10'>
           <Link 
               to='/login'
               className={` flex items-center text-base font-semibold cursor-pointer text-[#333333] hover:text-[#6415ff]  ${
@@ -90,6 +126,8 @@ const NavbarUser = () => {
               Register
             </Link>
         </div>
+        )}
+
       </div>
       </div>
 
@@ -181,45 +219,49 @@ const NavbarUser = () => {
                 </span>
               </Link>
             </li>
-
-            <li>
-              <Link
-                onClick={handleMobileLinkClick}
-                to="/login"
-                className={`p-2 flex items-center text-base font-semibold cursor-pointer text-[#333333] hover:text-[#6415ff]`}
-              >
-                <span
-                  className={`
-                    ${
-                      location.pathname.includes("/login")
-                        ? "border-b-2 border-[#6415ff] text-[#6414ff]"
-                        : "border-b-2 border-transparent hover:border-b-2 hover:border-[#6415ff] transition ease-in-out duration-300"
-                    }
-                  `}
-                >
-                  Login
-                </span>
-              </Link>
-            </li>
-            <li>
-              <Link
-                onClick={handleMobileLinkClick}
-                to="/register"
-                className={`p-2 flex items-center text-base font-semibold cursor-pointer text-[#333333] hover:text-[#6415ff]`}
-              >
-                <span
-                  className={`
-                    ${
-                      location.pathname.includes("/register")
-                        ? "border-b-2 border-[#6415ff] "
-                        : "border-b-2 border-transparent hover:border-b-2 hover:border-[#6415ff] transition ease-in-out duration-300 bg-[#6415ff] text-white px-8 py-2 rounded-full "
-                    }
-                  `}
-                >
-                  Register
-                </span> 
-              </Link>
-            </li>
+              {!userData && (
+                <>
+                      <li>
+                  <Link
+                    onClick={handleMobileLinkClick}
+                    to="/login"
+                    className={`p-2 flex items-center text-base font-semibold cursor-pointer text-[#333333] hover:text-[#6415ff]`}
+                  >
+                    <span
+                      className={`
+                        ${
+                          location.pathname.includes("/login")
+                            ? "border-b-2 border-[#6415ff] text-[#6414ff]"
+                            : "border-b-2 border-transparent hover:border-b-2 hover:border-[#6415ff] transition ease-in-out duration-300"
+                        }
+                      `}
+                    >
+                      Login
+                    </span>
+                  </Link>
+                </li>
+                <li>
+                  <Link
+                    onClick={handleMobileLinkClick}
+                    to="/register"
+                    className={`p-2 flex items-center text-base font-semibold cursor-pointer text-[#333333] hover:text-[#6415ff]`}
+                  >
+                    <span
+                      className={`
+                        ${
+                          location.pathname.includes("/register")
+                            ? "border-b-2 border-[#6415ff] "
+                            : "border-b-2 border-transparent hover:border-b-2 hover:border-[#6415ff] transition ease-in-out duration-300 bg-[#6415ff] text-white px-8 py-2 rounded-full "
+                        }
+                      `}
+                    >
+                      Register
+                    </span> 
+                  </Link>
+                </li>
+                </>
+              )}
+         
 
 
             </ul>

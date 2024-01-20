@@ -31,6 +31,7 @@ const Login = () => {
 
       Cookies.set('token', response.data.token, { expires: 1 });
       Cookies.set('role', response.data.role, { expires: 1 });
+      Cookies.set('userId', response.data.userId, { expires: 1 });
   
       if (response.data.status === 'success') {
 
