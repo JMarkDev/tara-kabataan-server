@@ -28,6 +28,7 @@ const Login = () => {
         headers: { 'Content-Type': 'application/json' },
         // withCredentials: true,
       });
+      console.log(response.data)
 
       Cookies.set('token', response.data.token, { expires: 1 });
       Cookies.set('role', response.data.role, { expires: 1 });

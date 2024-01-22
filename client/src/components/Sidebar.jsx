@@ -1,7 +1,9 @@
 
 const Sidebar = () => {
   return (
-    <div>Sidebar</div>
+    <div>
+      <div className="w-[230px] h-[100vh]">Sidebar</div>
+    </div>
   )
 }
 

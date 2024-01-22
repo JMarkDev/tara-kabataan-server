@@ -1,17 +1,20 @@
 import { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import logo from '../assets/images/logo.jpg';
 import { Link, useLocation } from 'react-router-dom';
 import HamburgerButton from './HamburgerMenuButton/HamburgerButton';
 import Cookies from 'js-cookie';
 import api from '../api/api';
 import userIcon from '../assets/images/user.png';
-
+import UserProfile from './UserProfile';
 
 const NavbarUser = () => {
   const location = useLocation();
   const [mobileMenu, setMobileMenu] = useState(false);
   const [userData, setUserData] = useState(false);
   const [name, setName] = useState('');
+  const [open, setOpen] = useState(false); 
+  const navigate = useNavigate();
 
   const userId = Cookies.get('userId'); 
 
@@ -24,8 +27,10 @@ const NavbarUser = () => {
   useEffect(() => {
     const getUserData = async () => {
       try {
-        const response = await api.get(`/user/id/${userId}`);
-        setName(response.data.firstname)
+        if (userId) {
+          const response = await api.get(`/user/id/${userId}`);
+          setName(response.data.firstname)
+        }
       } catch (error) {
         console.log(error)
       }
@@ -40,6 +45,28 @@ const NavbarUser = () => {
 
   const handleMobileLinkClick = () => {
     closeMobileMenu(); // Close the mobile menu when a link is clicked
+  };
+
+  const handleLogout = () => {
+    Cookies.remove('token');
+    Cookies.remove('role');
+    Cookies.remove('userId');
+    setUserData(false)
+    navigate('/login');
+  } 
+
+  const showProfile = () => {
+    setOpen(!open);
+  };
+
+  const hideProfile = () => {
+    setOpen(false);
+  }
+
+  const handleDropdownClick = (event) => {
+    // Prevent closing the dropdown when clicking inside it
+    event.stopPropagation();
+    setOpen(false)
   };
 
 
@@ -101,11 +128,22 @@ const NavbarUser = () => {
         { userData ? (
           <div className='flex gap-10'>
             <h1 className='text-lg font-semibold text-center m-auto'>{name}</h1>
-            <img
-                className="w-8 h-8 rounded-full object-cover"
+            <img onClick={showProfile}
+                onMouseEnter={showProfile}
+                className="w-8 h-8 rounded-full object-cover cursor-pointer"
                 src={userIcon}
                 alt=""
               />
+          {open && (
+                <>
+                  <UserProfile 
+                  handleDropdownClick={handleDropdownClick}
+                  hideProfile={hideProfile}
+                  userId={userId}
+                  handleLogout={handleLogout}
+                  />
+                </>    
+              )}
           </div>
         ) : (
           <div className='flex gap-10'>
@@ -133,7 +171,31 @@ const NavbarUser = () => {
 
       <div className="md:hidden flex w-full justify-between items-center">
         <img src={logo} alt="logo" className="w-24 h-24" />
+        <div className='flex items-center'>
+        {
+          userData && (
+            <img onClick={showProfile}
+            onMouseEnter={showProfile}
+            className="w-8 mr-[50px] h-8 rounded-full object-cover cursor-pointer"
+            src={userIcon}
+            alt=""
+        />
+          )
+        }
+         {open && (
+            <>
+              <UserProfile 
+              handleDropdownClick={handleDropdownClick}
+              hideProfile={hideProfile}
+              userId={userId}
+              handleLogout={handleLogout}
+              />
+            </>    
+          )}
+
         <HamburgerButton setMobileMenu={setMobileMenu} mobileMenu={mobileMenu} />
+
+        </div>
       </div>
 
       <div className="lg:hidden">

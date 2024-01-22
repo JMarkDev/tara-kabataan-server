@@ -12,6 +12,7 @@ import ContactUs from './pages/User/ContactUs'
 import LayoutAdmin from './components/LayoutAdmin'
 import Dashboard from './pages/Admin/Dashboard/Dashboard'
 import VerifyOTP from './components/VeriryOTP/VerifyOTP'
+import Profile from './pages/User/Profile'
 
 function App() {
 
@@ -60,6 +61,11 @@ function App() {
       <Route path='/contact-us' element={
         <LayoutUser>
           <ContactUs />
+        </LayoutUser>
+      }/>
+      <Route path='/profile' element={
+        <LayoutUser>
+          <Profile />
         </LayoutUser>
       }/>
 

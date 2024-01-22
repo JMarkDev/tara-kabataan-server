@@ -5,7 +5,7 @@
     margin: 24px;
     transition: all 0.25s;
     position: absolute;
-    right: 24px; 
+    right: 0; 
 }
 
 .hamburger-top,

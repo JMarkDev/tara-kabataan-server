@@ -1,7 +1,9 @@
 
 function NavbarDashboard() {
   return (
-    <div>NavbarDashboard</div>
+    <div className="h-[70px]">
+      NavbarDashboard
+    </div>
   )
 }
 
