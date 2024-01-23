@@ -100,7 +100,8 @@ const handleLogin = async (req, res) => {
                     status: "success",
                     message: "Login successful",
                     role: user.role,
-                    token: token
+                    token: token,
+                    userId: user.id
                 })
             } else {
                 return res.status(400).json({
