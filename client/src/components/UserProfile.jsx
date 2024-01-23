@@ -1,7 +1,10 @@
 import { Link } from 'react-router-dom'
 import Proptypes from 'prop-types'
+import Cookies from 'js-cookie';
 
 const UserProfile = ({ handleDropdownClick, hideProfile, handleLogout}) => {
+    const role = Cookies.get('role');  
+
     UserProfile.propTypes = {
         handleDropdownClick: Proptypes.func.isRequired,
         hideProfile: Proptypes.func.isRequired,
@@ -17,8 +20,7 @@ const UserProfile = ({ handleDropdownClick, hideProfile, handleLogout}) => {
     <ul className="w-full">
       <li>
         <Link
-        
-        to='/profile'
+        to={`${role === 'user' ? '/profile' : '/admin/profile'}`}
         className="block dark:text-white dark:hover:text-[#075985] p-2  font-semibold cursor-pointer hover-bg-sky-100 dark:hover-bg-gray-200
         hover:bg-[#aed3ec] border-b-2 border-transparent dark:hover:bg-gray-20 "
       >
