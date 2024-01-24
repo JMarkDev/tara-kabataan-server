@@ -68,6 +68,10 @@ const Events = sequelize.define("events" , {
         type: DataTypes.INTEGER(10, 2),
         allowNull: true
    
+    }, 
+    status: {
+        type: DataTypes.STRING(55),
+        allowNull: false
     },
     created_at: {
         type: DataTypes.DATE,

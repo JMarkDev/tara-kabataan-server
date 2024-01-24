@@ -18,6 +18,7 @@ const addEvents = async (req, res) => {
             max_attendees,
             is_paid,
             price, 
+            status,
             discount
         } = req.body;
 
@@ -46,6 +47,7 @@ const addEvents = async (req, res) => {
             max_attendees: max_attendees,
             is_paid: is_paid,
             price: price,
+            status: 'on-going',
             discount: discount,
             created_at: sequelize.literal(`'${formattedDate}'`),
         });
@@ -96,7 +98,8 @@ const updateEvents = async (req, res) => {
             max_attendees,
             is_paid,
             price, 
-            discount
+            discount,
+            status,
         } = req.body;
 
     try {
@@ -129,6 +132,7 @@ const updateEvents = async (req, res) => {
                 is_paid: is_paid,
                 price: price,
                 discount: discount,
+                status: status,
                 updated_at: sequelize.literal(`'${formattedDate}'`),
             });
             return res.status(200).json({
