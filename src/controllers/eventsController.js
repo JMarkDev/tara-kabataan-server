@@ -9,14 +9,13 @@ const addEvents = async (req, res) => {
             description, 
             image, 
             organizer_name,
-            event_type,
             start_time, 
             end_time, 
             start_date,
             end_date,
             location, 
             max_attendees,
-            is_paid,
+            event_type,
             price, 
             status,
             discount
@@ -37,7 +36,6 @@ const addEvents = async (req, res) => {
             event_title: title,
             event_description: description,
             image: `/uploades/${newFileName}`,
-            event_type: event_type,
             start_time: start_time,
             end_time: end_time,
             start_date: start_date,
@@ -45,9 +43,9 @@ const addEvents = async (req, res) => {
             location: location,
             organizer_name: organizer_name,
             max_attendees: max_attendees,
-            is_paid: is_paid,
+            event_type: event_type,
             price: price,
-            status: 'on-going',
+            status: 'Upcoming',
             discount: discount,
             created_at: sequelize.literal(`'${formattedDate}'`),
         });
@@ -89,14 +87,13 @@ const updateEvents = async (req, res) => {
             description, 
             image, 
             organizer_name,
-            event_type,
             start_time, 
             end_time, 
             start_date,
             end_date,
             location, 
             max_attendees,
-            is_paid,
+            event_type,
             price, 
             discount,
             status,
@@ -121,7 +118,6 @@ const updateEvents = async (req, res) => {
                 event_title: title,
                 event_description: description,
                 image: `/uploades/${newFileName}`,
-                event_type: event_type,
                 start_time: start_time,
                 end_time: end_time,
                 start_date: start_date,
@@ -129,7 +125,7 @@ const updateEvents = async (req, res) => {
                 location: location,
                 organizer_name: organizer_name,
                 max_attendees: max_attendees,
-                is_paid: is_paid,
+                event_type: event_type,
                 price: price,
                 discount: discount,
                 status: status,
@@ -175,7 +171,7 @@ const searchEvents = async (req, res) => {
         
         const searchCriteria = {
             where: {
-                event_title: { [Op.like]: `%${title}%` }, // Use LIKE for partial matches
+                event_title: { [Op.like]: `${title}%` }, // Use LIKE for partial matches
             },
         }
 
@@ -188,12 +184,12 @@ const searchEvents = async (req, res) => {
 }
 
 const filterEvents = async (req, res) => {
-    const { is_free } = req.params;
+    const { event_type } = req.params;
     try {
 
         const filteredEvents = await eventModel.findAll({
             where: {
-                is_paid: is_free
+                event_type: event_type
             }
         })
         return res.status(200).json(filteredEvents)
@@ -203,6 +199,32 @@ const filterEvents = async (req, res) => {
     }
 }
 
+const paginationEvents = async (req, res) => {
+    const { page, size } = req.query;
+    const { limit, offset } = getPagination(page, size);
+        try{
+            const data = await eventModel.findAndCountAll({ where: {}, limit, offset })
+            const response = getPagingData(data, page, limit);
+            res.send(response);
+        } catch (error) {
+            console.error(error)
+            return res.status(500).json({Error: 'Pagination event error in server'})
+        }
+}
+
+const getPagination = (page, size) => {
+    const limit = size ? +size : 10;
+    const offset = page ? (page - 1) * limit : 0;
+    return { limit, offset };
+}
+
+const getPagingData = (data, page, limit) => {
+    const { count: totalItems, rows: events } = data;
+    const currentPage = page ? +page : 1;
+    const totalPages = Math.ceil(totalItems / limit);
+    return { totalItems, events, totalPages, currentPage };
+}
+
 module.exports = {
     addEvents,
     getAllEvents,
@@ -210,5 +232,6 @@ module.exports = {
     updateEvents,
     deleteEvent,
     searchEvents,
-    filterEvents
+    filterEvents,
+    paginationEvents
 }

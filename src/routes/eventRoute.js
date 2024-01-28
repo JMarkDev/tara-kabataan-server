@@ -10,6 +10,7 @@ router.post('/add', upload.single('image'), eventsController.addEvents);
 router.put('/update/:id', upload.single('image'), eventsController.updateEvents);
 router.get('/search/:title', eventsController.searchEvents);
 router.delete('/delete/:id', eventsController.deleteEvent);
-router.get('/filter/:is_free', eventsController.filterEvents);
+router.get('/filter/:event_type', eventsController.filterEvents);
+router.get('/pagination', eventsController.paginationEvents);
 
 module.exports = router;

@@ -5,6 +5,7 @@ const date = require('date-and-time')
 const saltRounds = 10
 const { sendOTP } = require('../utils/sendOTP')
 const { successRegistrationEmail } = require('../utils/successRegistrationEmail')
+const sequelize = require('../configs/database')
 
 const changePassController = async (req, res) => {
     const { email } = req.body
@@ -122,11 +123,18 @@ const confirmPassword = async (req, res) => {
             })
         }
 
+        const updatedAt = new Date()
+        const formattedDate = date.format(updatedAt, 'YYYY-MM-DD HH:mm:ss') ;
+
         const hashedPassword = await bcrypt.hash(password, saltRounds)
         const updatePassword = await userModel.update(
-            { password: hashedPassword },
-            { where: { email: email } }
-        )
+            {  password: hashedPassword,
+               updatedAt: sequelize.literal(`'${formattedDate}'`)
+            },
+            { 
+                where: { email: email } 
+            }
+        );
 
         // delete otp 
         await otpModel.destroy({

@@ -26,6 +26,22 @@ const getAllUsers = async (req, res) => {
     }
 }
 
+const getUserByRole = async (req, res) => {
+    const { role } = req.params;
+
+    try {
+        const users = await userModel.findAll({
+            where: {
+                role: role
+            }
+        });
+        return res.status(200).json(users)
+    } catch (error) {
+        console.error(error)
+        return res.status(500).json({Error: 'Get user by role error in server'})
+    }
+}
+
 const deleteUser = async (req, res) => {
     const { id } = req.params;
 
@@ -73,6 +89,7 @@ const searchUsers = async (req, res) => {
 module.exports = {
     getUserById,
     getAllUsers,
+    getUserByRole,
     deleteUser,
     searchUsers
 }

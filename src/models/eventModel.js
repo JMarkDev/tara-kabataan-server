@@ -20,10 +20,6 @@ const Events = sequelize.define("events" , {
         type: DataTypes.STRING(255),
         allowNull: true
     },
-    event_type: {
-        type: DataTypes.STRING(250),
-        allowNull: false
-    },
     start_time: {
         type: DataTypes.STRING(55),
         allowNull: false
@@ -56,7 +52,7 @@ const Events = sequelize.define("events" , {
     //     type: DataTypes.STRING(55),
     //     allowNull: true
     // },
-    is_paid: {
+    event_type: {
         type: DataTypes.STRING(55),
         allowNull: false
     },
