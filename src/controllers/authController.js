@@ -10,9 +10,14 @@ const { v4: uuidv4 } = require('uuid');
 
 const handleRegister = async (req, res) => {
     const userId = uuidv4();
+    const currentYear = new Date().getFullYear();
+    const customeId = userId.slice(0, 10) + currentYear;
+
     const { firstname, lastname, email, role, gender, password, status } = req.body;
 
     try {
+
+
         const hashedPassword = await bcrypt.hash(password, saltRounds);
         const verifiedUser = await userModel.count({
             where: {
@@ -39,7 +44,7 @@ const handleRegister = async (req, res) => {
 
             const sendOTP = await otpController.postOtp(email)
             await userModel.create({
-                id: userId,
+                id: customeId,
                 firstname: firstname,
                 lastname: lastname,
                 email: email, 

@@ -16,6 +16,10 @@ const Events = sequelize.define("events" , {
         type: DataTypes.STRING(250),
         allowNull: false
     },
+    event_category: {
+        type: DataTypes.STRING(55),
+        allowNull: false
+    },
     image: {
         type: DataTypes.STRING(255),
         allowNull: true

@@ -18,8 +18,13 @@ const getUserById = async (req, res) => {
 
 const getAllUsers = async (req, res) => {
     try {
-        const users = await userModel.findAll();
-        return res.status(200).json(users)
+        const verifiedUsers = await userModel.findAll({
+            where: {
+                status: 'verified'
+            }
+        })
+
+        return res.status(200).json(verifiedUsers)
     } catch (error) {
         console.error(error)
         return res.status(500).json({Error: 'Get all users error in server'})
@@ -32,7 +37,8 @@ const getUserByRole = async (req, res) => {
     try {
         const users = await userModel.findAll({
             where: {
-                role: role
+                role: role,
+                status: 'verified'
             }
         });
         return res.status(200).json(users)
@@ -60,29 +66,42 @@ const deleteUser = async (req, res) => {
 
 const searchUsers = async (req, res) => {
     const { name, role } = req.params;
-    console.log(name, role)
 
     try {
         const searchCriteria = {
             where: {
-                firstname: { [Op.like]: `%${name}%` }, // Use LIKE for partial matches
+                firstname: { [Op.like]: `${name}%` }, // Use LIKE for partial matches
                 status: 'verified',
                 role: role
             },
         }
 
         const users = await userModel.findAll(searchCriteria);
-        console.log(users)
-
-        if(users.length > 0) {
-            return res.status(200).json(users)
-        } else {
-            return res.status(404).json({Error: 'No users found'})
-        }
-
+        return res.status(200).json(users)
     } catch (error) {
         console.error(error)
         return res.status(500).json({Error: 'Search users error in server'})
+    }
+}
+
+const filterByGender = async (req, res) => {
+    const { gender, role } = req.params;
+
+    try {
+        const filtedUsers = await userModel.findAll({
+            where: {
+                role: role,
+                status: 'verified',
+                gender: gender
+            }
+        })
+
+        console.log(filtedUsers)
+
+        return res.status(200).json(filtedUsers)
+    } catch (error) {
+        console.error(error)
+        return res.status(500).json({Error: 'Filter users error in server'})
     }
 }
 
@@ -91,5 +110,6 @@ module.exports = {
     getAllUsers,
     getUserByRole,
     deleteUser,
-    searchUsers
+    searchUsers,
+    filterByGender
 }
