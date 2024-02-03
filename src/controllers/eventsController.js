@@ -36,7 +36,7 @@ const addEvents = async (req, res) => {
         const event = await eventModel.create({
             event_title: title,
             event_description: description,
-            image: `/uploades/${newFileName}`,
+            image: `/uploads/${newFileName}`,
             event_category: event_category,
             start_time: start_time,
             end_time: end_time,
@@ -85,69 +85,75 @@ const getEventById = async (req, res) => {
 
 const updateEvents = async (req, res) => {
     const { id } = req.params;
-    const { title, 
-            description, 
-            image, 
-            organizer_name,
-            event_category,
-            start_time, 
-            end_time, 
-            start_date,
-            end_date,
-            location, 
-            max_attendees,
-            event_type,
-            price, 
-            discount,
-            status,
-        } = req.body;
+    const {
+        title,
+        description,
+        organizer_name,
+        event_category,
+        start_time,
+        end_time,
+        start_date,
+        end_date,
+        location,
+        max_attendees,
+        event_type,
+        price,
+        discount,
+        status,
+    } = req.body;
 
     try {
         const event = await eventModel.findByPk(id);
-        if(!event) {
-            return res.status(404).json({Error: 'Event not found'})
-        } else {
+        if (!event) {
+            return res.status(404).json({ Error: 'Event not found' });
+        }
+
+        if (req.file) {
+            // Only process the file if it's included in the update request
             let filetype = req.file.mimetype.split('/')[1];
             let newFileName = req.file.filename + '.' + filetype;
             fs.rename(`./uploads/${req.file.filename}`, `./uploads/${newFileName}`, async (err) => {
-                if(err) throw err;
-                console.log('uploaded successfully')
-            })
-
-            const updatedAt = new Date()
-            const formattedDate = date.format(updatedAt, 'YYYY-MM-DD HH:mm:ss') ; 
-
-            await event.update({
-                event_title: title,
-                event_description: description,
-                image: `/uploades/${newFileName}`,
-                event_category: event_category,
-                start_time: start_time,
-                end_time: end_time,
-                start_date: start_date,
-                end_date: end_date,
-                location: location,
-                organizer_name: organizer_name,
-                max_attendees: max_attendees,
-                event_type: event_type,
-                price: price,
-                discount: discount,
-                status: status,
-                updated_at: sequelize.literal(`'${formattedDate}'`),
+                if (err) throw err;
+                console.log('Uploaded successfully');
             });
-            return res.status(200).json({
-                status: 'success', 
-                message: 'Event updated successfully',
-                event
-            })
+
+            event.image = `/uploads/${newFileName}`;
         }
 
-    } catch (error) {
-        console.error(error)
-        return res.status(500).json({Error: 'Update event error in server'})
-    }
+        const updatedAt = new Date();
+        const formattedDate = date.format(updatedAt, 'YYYY-MM-DD HH:mm:ss');
 
-}
+        await event.update({
+            event_title: title,
+            event_description: description,
+            organizer_name: organizer_name,
+            event_category: event_category,
+            start_time: start_time,
+            end_time: end_time,
+            start_date: start_date,
+            end_date: end_date,
+            location: location,
+            max_attendees: max_attendees,
+            event_type: event_type,
+            price: price,
+            discount: discount,
+            status: status,
+            updated_at: sequelize.literal(`'${formattedDate}'`),
+        });
+
+        
+
+        return res.status(200).json({
+            status: 'success',
+            message: 'Event updated successfully',
+            event,
+        });
+    } catch (error) {
+        console.error(error);
+        return res.status(500).json({ Error: 'Update event error in server' });
+    }
+};
+
 
 const deleteEvent = async (req, res) => {
     const { id } = req.params;
