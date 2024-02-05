@@ -15,7 +15,7 @@ const addEvents = async (req, res) => {
             start_date,
             end_date,
             location, 
-            max_attendees,
+            attendance_count,
             event_type,
             price, 
             status,
@@ -44,7 +44,7 @@ const addEvents = async (req, res) => {
             end_date: end_date,
             location: location,
             organizer_name: organizer_name,
-            max_attendees: max_attendees,
+            attendance_count: attendance_count,
             event_type: event_type,
             price: price,
             status: 'Upcoming',
@@ -95,35 +95,29 @@ const updateEvents = async (req, res) => {
         start_date,
         end_date,
         location,
-        max_attendees,
+        attendance_count,
         event_type,
         price,
         discount,
-        status,
     } = req.body;
 
     try {
-        const event = await eventModel.findByPk(id);
-        if (!event) {
-            return res.status(404).json({ Error: 'Event not found' });
-        }
-
-        if (req.file) {
-            // Only process the file if it's included in the update request
-            let filetype = req.file.mimetype.split('/')[1];
-            let newFileName = req.file.filename + '.' + filetype;
-            fs.rename(`./uploads/${req.file.filename}`, `./uploads/${newFileName}`, async (err) => {
-                if (err) throw err;
-                console.log('Uploaded successfully');
-            });
-
-            event.image = `/uploads/${newFileName}`;
-        }
-
         const updatedAt = new Date();
         const formattedDate = date.format(updatedAt, 'YYYY-MM-DD HH:mm:ss');
 
-        await event.update({
+        let newFileName = null;
+
+        if (req.file) {
+            let fileType = req.file.mimetype.split('/')[1];
+            newFileName = req.file.filename + '.' + fileType;
+
+            fs.rename(`./uploads/${req.file.filename}`, `./uploads/${newFileName}`, function (err) {
+                if (err) throw err;
+                console.log('Uploaded Success');
+            });
+        }
+
+        const updateEventData = {
             event_title: title,
             event_description: description,
             organizer_name: organizer_name,
@@ -133,20 +127,27 @@ const updateEvents = async (req, res) => {
             start_date: start_date,
             end_date: end_date,
             location: location,
-            max_attendees: max_attendees,
+            attendance_count: attendance_count,
             event_type: event_type,
             price: price,
             discount: discount,
-            status: status,
             updated_at: sequelize.literal(`'${formattedDate}'`),
-        });
+        }
 
-        
+        if (newFileName) {
+            updateEventData.image = `/uploads/${newFileName}`;
+        }
+
+        const updateEvent = await eventModel.update(updateEventData, {
+            where: {
+                id: id
+            }
+        })
 
         return res.status(200).json({
             status: 'success',
             message: 'Event updated successfully',
-            event,
+            updateEvent
         });
     } catch (error) {
         console.error(error);

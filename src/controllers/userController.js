@@ -1,5 +1,10 @@
 const userModel = require('../models/userModel');
-const { Op } = require("sequelize");
+const { Op, where } = require("sequelize");
+const bcrypt = require('bcryptjs')
+const saltRounds = 10
+const sequelize = require('../configs/database')
+const date = require('date-and-time');
+// const User = require('../models/userModel');
 
 const getUserById = async (req, res) => {
     const { id } = req.params;
@@ -57,7 +62,7 @@ const deleteUser = async (req, res) => {
             return res.status(404).json({Error: 'User not found'})
         }
         await user.destroy();
-        return res.status(200).json({Message: 'User deleted'})
+        return res.status(200).json({status: 'success', message: 'User deleted successfully'})
     } catch (error) {
         console.error(error)
         return res.status(500).json({Error: 'Delete user error in server'})
@@ -105,11 +110,46 @@ const filterByGender = async (req, res) => {
     }
 }
 
+const updateUser = async (req, res) => {
+    const { id } = req.params
+    const { firstname, lastname, role, gender, password } = req.body
+
+    try {
+        const hashedPassword = await bcrypt.hash(password, saltRounds)
+        const updatedAt = new Date();
+        const formattedDate = date.format(updatedAt, 'YYYY-MM-DD HH:mm:ss');
+
+        const updateData = {
+            firstname: firstname,
+            lastname: lastname,
+            role: role,
+            gender: gender,
+            password: hashedPassword,
+            updatedAt: sequelize.literal(`'${formattedDate}'`),
+        }
+
+        const updateUser = await userModel.update(updateData , {
+            where: {
+                id: id
+            }
+        })
+
+        return res.status(200).json({
+            updateUser,
+            status: 'success',
+            message: 'Updated Successfully'
+        })
+    } catch (error) {
+        return res.status(500).json({Error: 'Update user error'})
+    }
+}
+
 module.exports = {
     getUserById,
     getAllUsers,
     getUserByRole,
     deleteUser,
     searchUsers,
-    filterByGender
+    filterByGender,
+    updateUser
 }

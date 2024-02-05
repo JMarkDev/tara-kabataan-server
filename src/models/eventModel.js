@@ -48,7 +48,7 @@ const Events = sequelize.define("events" , {
         type: DataTypes.STRING(255),
         allowNull: true
     },
-    max_attendees: {
+    attendance_count: {
         type: DataTypes.INTEGER,
         allowNull: false
     },
