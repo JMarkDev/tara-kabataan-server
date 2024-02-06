@@ -16,14 +16,12 @@ const changePassController = async (req, res) => {
 
     try {
         const emailExist = await userModel.findOne({ where: { email: email } })
-        console.log('emailExist', emailExist)
         const verifiedUser = await userModel.count({
             where: {
                 email: email,
                 status: 'verified'
             }
         })
-        console.log('verified user', verifiedUser)
 
         if( emailExist && verifiedUser) {
             await sendChangePassOTP(email)

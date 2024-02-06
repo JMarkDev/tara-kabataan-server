@@ -117,32 +117,55 @@ const updateEvents = async (req, res) => {
             });
         }
 
-        const updateEventData = {
-            event_title: title,
-            event_description: description,
-            organizer_name: organizer_name,
-            event_category: event_category,
-            start_time: start_time,
-            end_time: end_time,
-            start_date: start_date,
-            end_date: end_date,
-            location: location,
-            attendance_count: attendance_count,
-            event_type: event_type,
-            price: price,
-            discount: discount,
-            updated_at: sequelize.literal(`'${formattedDate}'`),
-        }
+        // const updateEventData = {
+        //     event_title: title,
+        //     event_description: description,
+        //     organizer_name: organizer_name,
+        //     event_category: event_category,
+        //     start_time: start_time,
+        //     end_time: end_time,
+        //     start_date: start_date,
+        //     end_date: end_date,
+        //     location: location,
+        //     attendance_count: attendance_count,
+        //     event_type: event_type,
+        //     price: price,
+        //     discount: discount,
+        //     updated_at: sequelize.literal(`'${formattedDate}'`),
+        // }
 
-        if (newFileName) {
-            updateEventData.image = `/uploads/${newFileName}`;
-        }
+        // if (newFileName) {
+        //     updateEventData.image = `/uploads/${newFileName}`;
+        // }
 
-        const updateEvent = await eventModel.update(updateEventData, {
-            where: {
-                id: id
-            }
-        })
+        // const updateEvent = await eventModel.update(updateEventData, {
+        //     where: {
+        //         id: id
+        //     }
+        // })
+
+        const updateEvent = await eventModel.update(
+            {
+                event_title: title,
+                event_description: description,
+                organizer_name: organizer_name,
+                image: `/uploads/${newFileName}`,
+                event_category: event_category,
+                start_time: start_time,
+                end_time: end_time,
+                start_date: start_date,
+                end_date: end_date,
+                location: location,
+                attendance_count: attendance_count,
+                event_type: event_type,
+                price: price,
+                discount: discount,
+                updated_at: sequelize.literal(`'${formattedDate}'`)
+            }, {
+                where: {
+                    id: id
+                }
+            })
 
         return res.status(200).json({
             status: 'success',
