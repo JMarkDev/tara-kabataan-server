@@ -1,4 +1,3 @@
-const adminModel = require('../models/adminModel')
 const userModel = require('../models/userModel')
 const otpController = require('./otpController')
 const date = require('date-and-time')

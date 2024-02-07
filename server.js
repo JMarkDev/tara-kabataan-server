@@ -13,6 +13,7 @@ const verifiedUser = require('./src/middlewares/verifyUser');
 const autRoute = require('./src/routes/authRoute');
 const userRoute = require('./src/routes/userRoute');
 const eventRoute = require('./src/routes/eventRoute');
+const categoryRoute = require('./src/routes/categoryRoute');
 
 // Middleware setup
 app.use(cors());
@@ -35,6 +36,7 @@ app.get('/', verifiedUser, (req, res) => {
 app.use('/auth', autRoute);
 app.use('/user', userRoute);
 app.use('/event', eventRoute);
+app.use('/category', categoryRoute);
 
 // Server setup
 const server = http.createServer(app);

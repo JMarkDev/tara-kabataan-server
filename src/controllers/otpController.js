@@ -35,7 +35,6 @@ const verifyOTP = async (req, res) => {
       }
     })
 
-    console.log(userData)
 
     const matchedOTPRecord = await otpModel.findOne({
       where: {

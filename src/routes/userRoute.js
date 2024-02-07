@@ -10,7 +10,7 @@ router.get('/search/:name/:role', userController.searchUsers)
 router.get('/filter/:gender/:role', userController.filterByGender)
 
 router.put('/update/:id', registerValidationRules(), validateForm , userController.updateUser)
-router.put('/update/username/:id',updateUsernameValidationRules(), validateForm, userController.updateUsername)
+router.post('/update/username/:id',updateUsernameValidationRules(), validateForm, userController.updateUsername)
 router.put('/update/username/verify-otp/:id', userController.verifyOTP)
 
 router.delete('/delete/:id', userController.deleteUser)

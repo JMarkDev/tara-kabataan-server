@@ -155,9 +155,13 @@ const updateUsername = async (req, res) => {
                 status: 'Verified'
             }
         })
+        console.log(emailExist)
 
         if(emailExist) {
-            return res.status(409).json({ error: 'Username has already been taken, please try another username.'})
+            return res.status(409).json({ 
+                status: 'error',
+                message: 'Email has already been taken, please try another email.'
+            })
         } else {
             const createdOTP = await otpController.postOtp(email)
             return res.status(200).json({
