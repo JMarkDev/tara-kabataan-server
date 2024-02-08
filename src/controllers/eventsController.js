@@ -86,8 +86,8 @@ const getEventById = async (req, res) => {
 const updateEvents = async (req, res) => {
     const { id } = req.params;
     const {
-        title,
-        description,
+        event_title,
+        event_description,
         organizer_name,
         event_category,
         start_time,
@@ -146,8 +146,8 @@ const updateEvents = async (req, res) => {
 
         const updateEvent = await eventModel.update(
             {
-                event_title: title,
-                event_description: description,
+                event_title: event_title,
+                event_description: event_description,
                 organizer_name: organizer_name,
                 image: `/uploads/${newFileName}`,
                 event_category: event_category,

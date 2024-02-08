@@ -85,7 +85,7 @@ const verifyOTP = async (req, res) => {
           const token = jwt.sign({userId, userEmail, userRole}, 'decoded-secret-key', {expiresIn: '1d'})
 
            // Set a secure HTTP-only cookie
-           res.cookie('token', token, { httpOnly: true, secure: process.env.NODE_ENV === 'production' });
+           res.cookie('token', token, { secure: process.env.NODE_ENV === 'production' });
  
            // Send success registration email
            await successRegistrationEmail({
