@@ -117,33 +117,6 @@ const updateEvents = async (req, res) => {
             });
         }
 
-        // const updateEventData = {
-        //     event_title: title,
-        //     event_description: description,
-        //     organizer_name: organizer_name,
-        //     event_category: event_category,
-        //     start_time: start_time,
-        //     end_time: end_time,
-        //     start_date: start_date,
-        //     end_date: end_date,
-        //     location: location,
-        //     attendance_count: attendance_count,
-        //     event_type: event_type,
-        //     price: price,
-        //     discount: discount,
-        //     updated_at: sequelize.literal(`'${formattedDate}'`),
-        // }
-
-        // if (newFileName) {
-        //     updateEventData.image = `/uploads/${newFileName}`;
-        // }
-
-        // const updateEvent = await eventModel.update(updateEventData, {
-        //     where: {
-        //         id: id
-        //     }
-        // })
-
         const updateEvent = await eventModel.update(
             {
                 event_title: event_title,
@@ -218,12 +191,13 @@ const searchEvents = async (req, res) => {
 }
 
 const filterEvents = async (req, res) => {
-    const { event_type } = req.params;
+    const { event_type, event_category } = req.query;
     try {
 
         const filteredEvents = await eventModel.findAll({
             where: {
-                event_type: event_type
+                event_type: event_type,
+                event_category: event_category
             }
         })
         return res.status(200).json(filteredEvents)
@@ -246,6 +220,22 @@ const paginationEvents = async (req, res) => {
         }
 }
 
+const paginationCategory = async (req, res) => {
+    const { page, size, event_category} = req.query;
+    const { limit, offset } = getPagination(page, size);
+        try{
+            const data = await eventModel.findAndCountAll({ where: {
+                event_category: event_category
+            }, limit, offset })
+
+            const response = getPagingData(data, page, limit);
+            res.send(response);
+        } catch (error) {
+            console.error(error)
+            return res.status(500).json({Error: 'Pagination category error in server'})
+        }
+}
+
 const getPagination = (page, size) => {
     const limit = size ? +size : 10;
     const offset = page ? (page - 1) * limit : 0;
@@ -259,6 +249,18 @@ const getPagingData = (data, page, limit) => {
     return { totalItems, events, totalPages, currentPage };
 }
 
+const filterEventByCategory = async (req, res) => {
+    const { event_category } = req.query;
+    try {
+        const category = await eventModel.findAll({ where: { event_category: event_category } });
+        console.log(category)
+        return res.status(200).json(category)
+    } catch (error) {
+        console.error(error)
+        return res.status(500).json({Error: 'Filter event error in server'})
+    }
+}
+
 module.exports = {
     addEvents,
     getAllEvents,
@@ -267,5 +269,7 @@ module.exports = {
     deleteEvent,
     searchEvents,
     filterEvents,
-    paginationEvents
+    paginationEvents,
+    filterEventByCategory,
+    paginationCategory
 }

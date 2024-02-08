@@ -159,5 +159,5 @@ module.exports = {
     updateCategory,
     deleteCategory,
     searchCategory,
-    paginationCategory
+    paginationCategory,
 }
