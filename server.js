@@ -15,6 +15,7 @@ const userRoute = require('./src/routes/userRoute');
 const eventRoute = require('./src/routes/eventRoute');
 const categoryRoute = require('./src/routes/categoryRoute');
 const archiveRoute = require('./src/routes/archiveRoute');
+const chatbotRoute = require('./src/routes/chatbotRoute');
 
 // Middleware setup
 app.use(cors());
@@ -39,6 +40,7 @@ app.use('/user', userRoute);
 app.use('/event', eventRoute);
 app.use('/category', categoryRoute);
 app.use('/archive', archiveRoute);
+app.use('/chatbot', chatbotRoute);
 
 // Server setup
 const server = http.createServer(app);

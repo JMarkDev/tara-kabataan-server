@@ -1,0 +1,13 @@
+module.exports = {
+    "type": "service_account",
+    "project_id": "tara-kabataan-chatbot-ymhw",
+    "private_key_id": "70befa04cba0b078c60f46784c75f7281fa612cd",
+    "private_key": "-----BEGIN PRIVATE KEY-----\nMIIEvgIBADANBgkqhkiG9w0BAQEFAASCBKgwggSkAgEAAoIBAQDRvaURKYtqtQln\nrDSyMjjFvodsurZ9Ms5NzTpdj0lBfzVKEBKCZwE+vnropF1xfLezevdDvpsjZxMY\nhPGQ3LOZJDHPFWOESXekYYZKLi3hgS2O3eNiav+knXhgsV1EAUOhGYZumUUu1chi\npQgxvuDRb/z9XD+1s5tVfkee3nP9WuWYnwHGF77+wxUMLt7AEOwIKnjGoZbH+buS\nHOPsDBbL4d4zBT4SnKwyQG9bgk/yp1mOCmnUAebwFrosNyEhbVUNTFRsqG31rN/a\n1+53fCU82b02BcvFBioXpg53VbJXHcoqH05shr9ZJtCI00Nu4eZcgAllloKLGUk3\n8xV0nbgrAgMBAAECggEAGcBlmG5X4kGZBoQTsj9NTiYe/YANMOEAiHfmrx8NGQAT\n3GSNyTn5YqlDcPXhTTJJYb16x3QLGzUoGI4WFLmsSWSywuC258KXcHTS5p+13Wad\nX9mpded6PM1ivsh4EYXwNkLqiQDDiEUSRd5KW8U6WCyeTMM7RUVokH4hMAXTCuuZ\ngLoRpoy2jNfkiB5kGW7dqUWU0LOg6l2symQzNJ4r2QUUmByxce0kkxcenG82uZIv\nIn61sAM4L+8psPnRLbKeteoZR1vOX65EftDTeC3ZVGx14KyJLFpYczl202OOG4x+\nHcpY5RIw90sVXrDJtqkqho9B709/p0e3cJUFwq1rjQKBgQD8rcPFquwe9ePpUydr\nCcfnZpZ0DAU8TVa5D8EN+/SEy83rUBeFhtR6Nrd28qfgBUtiS3Jspn+MnpvXYtqQ\nu6QVjrzXS/h8HyHYyjfUm0Ilo3+xKO1XREcHRKyEApTfcJ/BDBC7fgR65MHRJPqp\nIw3Wi8/53MwE/LqW16ngXLLWJQKBgQDUf2YQUydDZzyx91NS8rgU3k4ykMKDCx8+\nIOjSNJPz01kkl2P1tOqGD/hVJhhL61uX66n5fv2VBzJT3mxCh5ypgEjaaSzb8x/a\nWKDrTHnVyQyZfyfDVAu8sgyEVhpqSgG2hDde8s0YZCrRjTuE0pnRf4jNEgsXlHd1\nM77952C8DwKBgQDI21hESRppgg0p7G/pJl1CFMqEdQm0ZcYKVfugoig9Z8TIyWHp\nQsSkYdp1M28/JPZHrLHIrJG3tl0rWelkI8TLXiu++SUNhbHiIt0+pCxwvwdCTMZe\nGGhd3rlENskg1OYpDu4+HG5zQmTPXBXlXXgilAE/HcUQMdYhEk53izieAQKBgENH\nqvsUOORAdZkrY7hpnRsOX9fmuY9gIB49sTmM6CNVEW5ieIW9KFwWBlx/WUYAWNm7\nBfA24vcidi7Tx5cw9Ms+ENMGZeumCLnLQff+GL01kMWw2tgfbi/qd8gWsvpgQDaX\nmih327QTUvNSMjwVqhoItTmostZebYwwPBKMBbbFAoGBANcCdWR5sTrVKd9JZmqf\n9XXrdjMZx+OD5zua9xb2Dkpv8c3YMMtsgPoT3d8qfbVt+FE9KzFLKIKAF63/Q6Ax\nTpmUtBtmYUJqe/EEgNEKsoEEWU0J9+dx7zcUI4jaq7ONfMfDZKVTt8r6xkc853M9\nidDdOlJRKXJHQM1s80hWMqPA\n-----END PRIVATE KEY-----\n",
+    "client_email": "tara-kabataan-chatbot@tara-kabataan-chatbot-ymhw.iam.gserviceaccount.com",
+    "client_id": "111220403956258547050",
+    "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+    "token_uri": "https://oauth2.googleapis.com/token",
+    "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+    "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/tara-kabataan-chatbot%40tara-kabataan-chatbot-ymhw.iam.gserviceaccount.com",
+    "universe_domain": "googleapis.com"
+}
