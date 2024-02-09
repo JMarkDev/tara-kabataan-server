@@ -178,6 +178,7 @@ const searchEvents = async (req, res) => {
         
         const searchCriteria = {
             where: {
+                status: 'Upcoming',
                 event_title: { [Op.like]: `${title}%` }, // Use LIKE for partial matches
             },
         }
@@ -189,6 +190,26 @@ const searchEvents = async (req, res) => {
         return res.status(500).json({Error: 'Search event error in server'})
     }
 }
+
+const searchEventsCompleted = async (req, res) => {
+    const { title } = req.params;
+    try {
+        
+        const searchCriteria = {
+            where: {
+                status: 'Completed',
+                event_title: { [Op.like]: `${title}%` }, // Use LIKE for partial matches
+            },
+        }
+
+        const event = await eventModel.findAll(searchCriteria);
+        return res.status(200).json(event)
+    } catch (error) {
+        console.error(error)
+        return res.status(500).json({Error: 'Search event error in server'})
+    }
+}
+
 
 const filterEvents = async (req, res) => {
     const { event_type, event_category } = req.query;
@@ -211,7 +232,26 @@ const paginationEvents = async (req, res) => {
     const { page, size } = req.query;
     const { limit, offset } = getPagination(page, size);
         try{
-            const data = await eventModel.findAndCountAll({ where: {}, limit, offset })
+            const data = await eventModel.findAndCountAll({ 
+                where: {
+                    status: 'Upcoming'
+                }, limit, offset })
+            const response = getPagingData(data, page, limit);
+            res.send(response);
+        } catch (error) {
+            console.error(error)
+            return res.status(500).json({Error: 'Pagination event error in server'})
+        }
+}
+
+const paginationEventsCompleted = async (req, res) => {
+    const { page, size } = req.query;
+    const { limit, offset } = getPagination(page, size);
+        try{
+            const data = await eventModel.findAndCountAll({ 
+                where: {
+                    status: 'Completed'
+                }, limit, offset })
             const response = getPagingData(data, page, limit);
             res.send(response);
         } catch (error) {
@@ -224,7 +264,8 @@ const paginationCategory = async (req, res) => {
     const { page, size, event_category} = req.query;
     const { limit, offset } = getPagination(page, size);
         try{
-            const data = await eventModel.findAndCountAll({ where: {
+            const data = await eventModel.findAndCountAll({ 
+            where: {
                 event_category: event_category
             }, limit, offset })
 
@@ -268,8 +309,10 @@ module.exports = {
     updateEvents,
     deleteEvent,
     searchEvents,
+    searchEventsCompleted,
     filterEvents,
     paginationEvents,
     filterEventByCategory,
-    paginationCategory
+    paginationCategory,
+    paginationEventsCompleted
 }
