@@ -5,6 +5,7 @@ const multer = require('multer');
 const upload = multer({ dest: './uploads' });
 
 router.get('/all', eventsController.getAllEvents);
+router.get('/upcoming', eventsController.getUpcomingEvents);
 router.get('/id/:id', eventsController.getEventById);
 router.post('/add', upload.single('image'), eventsController.addEvents);
 router.put('/update/:id', upload.single('image'), eventsController.updateEvents);

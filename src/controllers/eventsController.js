@@ -72,6 +72,16 @@ const getAllEvents = async (req, res) => {
     }
 }
 
+const getUpcomingEvents = async (req, res) => {
+    try {
+        const events = await eventModel.findAll({ where: { status: 'Upcoming' } });
+        return res.status(200).json(events)
+    } catch (error) {
+        console.error(error)
+        return res.status(500).json({Error: 'Get all events error in server'})
+    }
+}
+
 const getEventById = async (req, res) => {
     const { id } = req.params;
     try {
@@ -305,6 +315,7 @@ const filterEventByCategory = async (req, res) => {
 module.exports = {
     addEvents,
     getAllEvents,
+    getUpcomingEvents,
     getEventById,
     updateEvents,
     deleteEvent,
