@@ -192,6 +192,23 @@ const deleteEvent = async (req, res) => {
     }
 }
 
+const searchAllEvents = async (req, res) => {
+    const { title } = req.params;
+    try {
+        const searchCriteria = {
+            where: {
+                event_title: { [Op.like]: `${title}%` }, // Use LIKE for partial matches
+            },
+        }
+
+        const event = await eventModel.findAll(searchCriteria);
+        return res.status(200).json(event)
+    } catch (error) {
+        console.error(error)
+        return res.status(500).json({Error: 'Search event error in server'})
+    } 
+}
+
 const searchEvents = async (req, res) => {
     const { title } = req.params;
     try {
@@ -330,6 +347,7 @@ module.exports = {
     getEventById,
     updateEvents,
     deleteEvent,
+    searchAllEvents,
     searchEvents,
     searchEventsCompleted,
     filterEvents,

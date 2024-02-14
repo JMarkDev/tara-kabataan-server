@@ -10,6 +10,7 @@ router.get('/completed', eventsController.getCompletedEvents);
 router.get('/id/:id', eventsController.getEventById);
 router.post('/add', upload.single('image'), eventsController.addEvents);
 router.put('/update/:id', upload.single('image'), eventsController.updateEvents);
+router.get('/search-all/:title', eventsController.searchAllEvents);
 router.get('/search/:title', eventsController.searchEvents);
 router.get('/search-completed/:title', eventsController.searchEventsCompleted);
 router.delete('/delete/:id', eventsController.deleteEvent);
