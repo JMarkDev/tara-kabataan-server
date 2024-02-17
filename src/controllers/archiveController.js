@@ -27,6 +27,7 @@ const getArchiveById = async (req, res) => {
 
 const updateEventStatus = async (req, res) => {
     const { id } = req.params;
+    const { event_name } = req.body
 
     try {
         const created_at = new Date()
@@ -51,6 +52,7 @@ const updateEventStatus = async (req, res) => {
 
         const createArchive = await archiveModel.create({
             event_id: id,
+            event_name: event_name,
             images: imageFileNames.join(','),
             created_at: formattedDate
         });

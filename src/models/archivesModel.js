@@ -7,8 +7,12 @@ const Archives = sequelize.define('archives', {
         type: DataTypes.STRING(55),
         allowNull: false
     },
+    event_name : {
+        type: DataTypes.STRING(245),
+        allowNull: false
+    },
     images: {
-        type: DataTypes.STRING(455),
+        type: DataTypes.STRING(1000),
         allowNull: true
     },
     created_at: {
