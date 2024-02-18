@@ -210,55 +210,18 @@ const searchAllEvents = async (req, res) => {
 }
 
 const searchEvents = async (req, res) => {
-    const { title } = req.params;
+    const { title, status } = req.params;
     try {
         
         const searchCriteria = {
             where: {
-                status: 'Upcoming',
+                status: status,
                 event_title: { [Op.like]: `${title}%` }, // Use LIKE for partial matches
             },
         }
 
         const event = await eventModel.findAll(searchCriteria);
         return res.status(200).json(event)
-    } catch (error) {
-        console.error(error)
-        return res.status(500).json({Error: 'Search event error in server'})
-    }
-}
-
-const searchEventsCompleted = async (req, res) => {
-    const { title } = req.params;
-    try {
-        
-        const searchCriteria = {
-            where: {
-                status: 'Completed',
-                event_title: { [Op.like]: `${title}%` }, // Use LIKE for partial matches
-            },
-        }
-
-        const event = await eventModel.findAll(searchCriteria);
-        return res.status(200).json(event)
-    } catch (error) {
-        console.error(error)
-        return res.status(500).json({Error: 'Search event error in server'})
-    }
-}
-
-
-const filterEvents = async (req, res) => {
-    const { event_type, event_category } = req.query;
-    try {
-
-        const filteredEvents = await eventModel.findAll({
-            where: {
-                event_type: event_type,
-                event_category: event_category
-            }
-        })
-        return res.status(200).json(filteredEvents)
     } catch (error) {
         console.error(error)
         return res.status(500).json({Error: 'Search event error in server'})
@@ -266,28 +229,12 @@ const filterEvents = async (req, res) => {
 }
 
 const paginationEvents = async (req, res) => {
-    const { page, size } = req.query;
+    const { page, size, status } = req.query;
     const { limit, offset } = getPagination(page, size);
         try{
             const data = await eventModel.findAndCountAll({ 
                 where: {
-                    status: 'Upcoming'
-                }, limit, offset })
-            const response = getPagingData(data, page, limit);
-            res.send(response);
-        } catch (error) {
-            console.error(error)
-            return res.status(500).json({Error: 'Pagination event error in server'})
-        }
-}
-
-const paginationEventsCompleted = async (req, res) => {
-    const { page, size } = req.query;
-    const { limit, offset } = getPagination(page, size);
-        try{
-            const data = await eventModel.findAndCountAll({ 
-                where: {
-                    status: 'Completed'
+                    status: status
                 }, limit, offset })
             const response = getPagingData(data, page, limit);
             res.send(response);
@@ -327,11 +274,67 @@ const getPagingData = (data, page, limit) => {
     return { totalItems, events, totalPages, currentPage };
 }
 
+const filterByStatusCatagory = async (req, res) => {
+    const { status, event_category } = req.params;
+    try {
+        const events = await eventModel.findAll({
+            where: {
+                status: status,
+                event_category: event_category
+            }
+        })
+        return res.status(200).json(events)
+    } catch (error) {
+        console.error(error)
+        return res.status(500).json({Error: 'Filter by status and category error'})
+    }
+}
+
+const filterEvents = async (req, res) => {
+    const { event_type, event_category } = req.query;
+    try {
+
+        const filteredEvents = await eventModel.findAll({
+            where: {
+                event_type: event_type,
+                event_category: event_category
+            }
+        })
+        return res.status(200).json(filteredEvents)
+    } catch (error) {
+        console.error(error)
+        return res.status(500).json({Error: 'Search event error in server'})
+    }
+}
+
+
+
+const filterEventType = async (req, res) => {
+    const { type } = req.params
+    try {
+        const events = await eventModel.findAll({ where: { event_type: type }});
+        return res.status(200).json(events)
+    } catch (error) {
+        console.error(error)
+        return res.status(500).json({Error: 'Filter by event type in server'})
+    }
+}
+
+const filterEventsStatus = async (req, res) => {
+    const { status } = req.params;
+    try {
+        const events = await eventModel.findAll({ where: { status: status } });
+        return res.status(200).json(events)
+    } catch (error) {
+        console.log(error)
+        return res.status(500).json({ Error: 'Filter by status error'})
+    }
+}
+
 const filterEventByCategory = async (req, res) => {
-    const { event_category } = req.query;
+    const { event_category } = req.params;
     try {
         const category = await eventModel.findAll({ where: { event_category: event_category } });
-        console.log(category)
         return res.status(200).json(category)
     } catch (error) {
         console.error(error)
@@ -339,9 +342,43 @@ const filterEventByCategory = async (req, res) => {
     }
 }
 
+const filterByStatusTypeCategory = async (req, res) => {
+    const { status, event_type, event_category } = req.params;
+    try {
+        const events = await eventModel.findAll({ 
+            where: { 
+                status: status,
+                event_type: event_type,
+                event_category: event_category
+            } 
+        })
+        return res.status(200).json(events)
+    } catch (error) {
+        console.err(error)
+        return res.status(500).json({Error: 'Filter event type, status, category error'})
+    }
+}
+
+const filterByStatusType = async (req, res) => {
+    const { status, event_type } = req.params;
+    try {
+        const events = await eventModel.findAll({
+            where: {
+                status: status,
+                event_type: event_type
+            }
+        })
+        return res.status(200).json(events)
+    } catch (error) {
+        console.error(error)
+        return res.status(500).json({Error: 'Filter by Status and price error'})
+    }
+}
+
 module.exports = {
     addEvents,
     getAllEvents,
+    filterEventsStatus,
     getUpcomingEvents,
     getCompletedEvents,
     getEventById,
@@ -349,10 +386,12 @@ module.exports = {
     deleteEvent,
     searchAllEvents,
     searchEvents,
-    searchEventsCompleted,
     filterEvents,
     paginationEvents,
     filterEventByCategory,
+    filterEventType,
+    filterByStatusTypeCategory,
+    filterByStatusCatagory,
+    filterByStatusType,
     paginationCategory,
-    paginationEventsCompleted
 }
