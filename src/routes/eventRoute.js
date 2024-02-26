@@ -12,6 +12,7 @@ router.get('/id/:id', eventsController.getEventById);
 router.post('/add', upload.single('image'), eventsController.addEvents);
 router.put('/update/:id', upload.single('image'), eventsController.updateEvents);
 router.get('/search-all/:title', eventsController.searchAllEvents);
+router.get('/search/:title/:category', eventsController.searchEventsByCategory);
 router.get('/search/:title/:status', eventsController.searchEvents);
 router.delete('/delete/:id', eventsController.deleteEvent);
 

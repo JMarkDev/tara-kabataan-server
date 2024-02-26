@@ -16,17 +16,18 @@ const addCategory = async (req, res) => {
         const existCategory = await categoryModel.findOne({ where: { category_name: category_name } });
         if (existCategory) {
             return res.status(400).json({ status: 'error', message: 'Category already exists' });
+        } else  {
+            const newCategory = await categoryModel.create({
+                category_name: category_name,
+                image: `/uploads/${newFileName}`
+            })
+            
+            return res.status(201).json({
+                status: 'success',
+                message: 'Category added successfully',
+                newCategory
+            })
         }
-        
-        const newCategory = await categoryModel.create({
-            category_name: category_name,
-            image: `/uploads/${newFileName}`
-        })
-        return res.status(201).json({
-            status: 'success',
-            message: 'Category added successfully',
-            newCategory
-        })
     } catch (error) {
         console.error(error);
         return res.status(500).json({ Error: 'Add category error in server' });

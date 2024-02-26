@@ -228,6 +228,25 @@ const searchEvents = async (req, res) => {
     }
 }
 
+const searchEventsByCategory = async (req, res) => {
+    const { title, category } = req.params;
+    try {
+        
+        const searchCriteria = {
+            where: {
+                event_category: category,
+                event_title: { [Op.like]: `${title}%` }, // Use LIKE for partial matches
+            },
+        }
+
+        const event = await eventModel.findAll(searchCriteria);
+        return res.status(200).json(event)
+    } catch (error) {
+        console.error(error)
+        return res.status(500).json({Error: 'Search event error in server'})
+    }
+}
+
 const paginationEvents = async (req, res) => {
     const { page, size, status } = req.query;
     const { limit, offset } = getPagination(page, size);
@@ -386,6 +405,7 @@ module.exports = {
     deleteEvent,
     searchAllEvents,
     searchEvents,
+    searchEventsByCategory,
     filterEvents,
     paginationEvents,
     filterEventByCategory,
