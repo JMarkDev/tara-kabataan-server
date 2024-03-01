@@ -79,9 +79,12 @@ const searchUsers = async (req, res) => {
     try {
         const searchCriteria = {
             where: {
-                firstname: { [Op.like]: `${name}%` }, // Use LIKE for partial matches
                 status: 'verified',
-                role: role
+                role: role,
+                [Op.or]: [
+                    {firstname: { [Op.like]: `${name}%` } },
+                    {lastname: { [Op.like]: `${name}%` } }
+                ]
             },
         }
 
