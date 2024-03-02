@@ -52,10 +52,6 @@ const Events = sequelize.define("events" , {
         type: DataTypes.INTEGER,
         allowNull: false
     },
-    // is_publish: {   
-    //     type: DataTypes.STRING(55),
-    //     allowNull: true
-    // },
     event_type: {
         type: DataTypes.STRING(55),
         allowNull: false
