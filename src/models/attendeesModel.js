@@ -12,6 +12,10 @@ const Attendees = sequelize.define("attendees" , {
         type: DataTypes.INTEGER,
         allowNull: false
     },
+    event_name: {
+        type: DataTypes.STRING(255),
+        allowNull: false
+    },
     attendee_name: {
         type: DataTypes.STRING(50),
         allowNull: false
@@ -24,10 +28,6 @@ const Attendees = sequelize.define("attendees" , {
         type: DataTypes.STRING(50),
         allowNull: false
     },
-    gender: {
-        type: DataTypes.STRING(50),
-        allowNull: false
-    },
     registration_time: {
         type: DataTypes.DATE,
         allowNull: false
@@ -36,25 +36,33 @@ const Attendees = sequelize.define("attendees" , {
         type: DataTypes.STRING(255),
         allowNull: false
     },
-    payment_amount: {
-        type: DataTypes.INTEGER,
-        allowNull: false
-    },
-    payment_discount: {
-        type: DataTypes.INTEGER,
-        allowNull: true
-    },  
-    status: {
+    payment_method: {
         type: DataTypes.STRING(50),
         allowNull: false
+    },
+    event_type: {
+        type: DataTypes.STRING(50),
+        allowNull: false
+    },
+    total_amount: {
+        type: DataTypes.INTEGER,
+        allowNull: true
+    },
+    status: {
+        type: DataTypes.STRING(50),
+        allowNull: true
     },
     created_at: {
         type: DataTypes.DATE,
         allowNull: false
     },
     updated_at: {
-        type: DataTypes.DATE
+        type: DataTypes.DATE,
+        allowNull: true
     },
+}, {
+    timestamps: false,
+    timeZone: '+08:00',
 });
 
 module.exports = Attendees;

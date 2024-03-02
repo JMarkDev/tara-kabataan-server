@@ -18,7 +18,6 @@ const addEvents = async (req, res) => {
             attendance_count,
             event_type,
             price, 
-            status,
             discount
         } = req.body;
 
