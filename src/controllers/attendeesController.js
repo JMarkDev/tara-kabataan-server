@@ -4,9 +4,12 @@ const sequelize = require('../configs/database');
 
 const addAttendees = async (req, res) => {
     const { event_id, 
+            user_id,
             event_name, 
             event_type, 
             attendee_name,
+            gender,
+            birthdate,
             attendee_email,
             phone_number,
             location,
@@ -21,9 +24,12 @@ const addAttendees = async (req, res) => {
 
         const attendee = await attendeesModel.create({
             event_id: event_id,
+            user_id: user_id,
             event_name: event_name,
             event_type: event_type,
             attendee_name: attendee_name,
+            gender: gender,
+            birthdate: birthdate,
             attendee_email: attendee_email,
             phone_number: phone_number,
             registration_time: formattedDate,
@@ -59,7 +65,19 @@ const allAttendeesByEventID = async (req, res) => {
     }
 } 
 
+const userJoinEvents = async (req, res) => {
+    const { user_id } = req.params;
+    try {
+        const getEvents = await attendeesModel.findAll({ where: {user_id: user_id}})
+        return res.status(200).json(getEvents)
+    } catch (error) {
+        console.error(error)
+        return res.status(500).json({Error: 'Get all events join error in server'})
+    }
+}
+
 module.exports = {
     addAttendees,
-    allAttendeesByEventID
+    allAttendeesByEventID,
+    userJoinEvents
 }

@@ -1,11 +1,16 @@
 const sequelize = require("../configs/database");
 const { DataTypes } = require("sequelize");
+const User = require('./userModel')
 
 const Attendees = sequelize.define("attendees" , {
     id: {
         type: DataTypes.INTEGER,
         autoIncrement: true,
         primaryKey: true,
+        allowNull: false
+    },
+    user_id: {
+        type: DataTypes.INTEGER,
         allowNull: false
     },
     event_id: {
@@ -18,6 +23,14 @@ const Attendees = sequelize.define("attendees" , {
     },
     attendee_name: {
         type: DataTypes.STRING(50),
+        allowNull: false
+    },
+    gender: {
+        type: DataTypes.STRING(50),
+        allowNull: false
+    },
+    birthdate: {
+        type: DataTypes.DATE,
         allowNull: false
     },
     attendee_email: {
@@ -64,5 +77,7 @@ const Attendees = sequelize.define("attendees" , {
     timestamps: false,
     timeZone: '+08:00',
 });
+
+Attendees.belongsTo(User, { foreignKey: 'user_id' })
 
 module.exports = Attendees;
