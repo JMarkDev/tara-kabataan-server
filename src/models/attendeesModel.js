@@ -61,10 +61,10 @@ const Attendees = sequelize.define("attendees" , {
         type: DataTypes.INTEGER,
         allowNull: true
     },
-    status: {
-        type: DataTypes.STRING(50),
-        allowNull: true
-    },
+    // status: {
+    //     type: DataTypes.STRING(50),
+    //     allowNull: true
+    // },
     created_at: {
         type: DataTypes.DATE,
         allowNull: false
