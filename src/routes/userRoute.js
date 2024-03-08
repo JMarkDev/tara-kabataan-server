@@ -24,7 +24,7 @@ router.put(
   "/update/:id",
   registerValidationRules(),
   validateForm,
-  userController.updateUser
+  userController.updateAdmin
 );
 router.post(
   "/update/username/:id",

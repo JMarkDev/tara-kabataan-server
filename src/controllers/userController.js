@@ -11,8 +11,6 @@ const {
   successRegistrationEmail,
 } = require("../utils/successRegistrationEmail");
 
-// const User = require('../models/userModel');
-
 const getUserById = async (req, res) => {
   const { id } = req.params;
 
@@ -120,7 +118,7 @@ const filterByGender = async (req, res) => {
   }
 };
 
-const updateUser = async (req, res) => {
+const updateAdmin = async (req, res) => {
   const { id } = req.params;
   const { firstname, lastname, email, gender, password } = req.body;
 
@@ -290,7 +288,7 @@ module.exports = {
   deleteUser,
   searchUsers,
   filterByGender,
-  updateUser,
+  updateAdmin,
   updateUsername,
   updateProfileImg,
   verifyOTP,

@@ -1,12 +1,14 @@
 const attendeesModel = require("../models/attendeesModel");
 const date = require("date-and-time");
 const sequelize = require("../configs/database");
+const userModel = require("../models/userModel");
 
 const addAttendees = async (req, res) => {
   const {
     event_id,
     user_id,
     event_name,
+    event_location,
     event_date,
     event_type,
     attendee_name,
@@ -35,25 +37,34 @@ const addAttendees = async (req, res) => {
       event_id: event_id,
       user_id: user_id,
       event_name: event_name,
+      event_location: event_location,
       event_date: event_date,
       event_type: event_type,
       attendee_name: attendee_name,
       gender: gender,
-      birthdate: birthdate,
       attendee_email: attendee_email,
-      phone_number: phone_number,
       registration_time: formattedDate,
-      location: location,
       payment_method: payment_method,
       total_amount: total_amount,
-      // status: status,
       created_at: sequelize.literal(`'${formattedDate}'`),
     });
+
+    const updateUser = await userModel.update(
+      {
+        birthdate: birthdate,
+        phone_number: "+" + phone_number,
+        location: location,
+      },
+      {
+        where: { id: user_id },
+      }
+    );
 
     return res.status(200).json({
       status: "success",
       message: "Attendees Join Successfully",
       attendee,
+      updateUser,
     });
   } catch (error) {
     console.error(error);

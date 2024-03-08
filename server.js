@@ -56,14 +56,14 @@ const io = new Server(server, {
   },
 });
 
-io.on("connection", (socket) => {
-  console.log(socket.id);
+// io.on("connection", (socket) => {
+//   console.log(socket.id);
 
-  // socket.on('message', (message) => {
-  //     console.log(message);
-  //     io.emit('message', message);
-  // })
-});
+// socket.on('message', (message) => {
+//     console.log(message);
+//     io.emit('message', message);
+// })
+// });
 
 server.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);
