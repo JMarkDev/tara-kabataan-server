@@ -32,6 +32,8 @@ router.post(
   validateForm,
   userController.updateUsername
 );
+router.put("/update-user-profile/:id", userController.updateAllUserData);
+
 router.put("/update/username/verify-otp/:id", userController.verifyOTP);
 
 router.delete("/delete/:id", userController.deleteUser);

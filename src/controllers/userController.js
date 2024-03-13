@@ -215,6 +215,45 @@ const updateProfileImg = async (req, res) => {
   }
 };
 
+const updateAllUserData = async (req, res) => {
+  const { id } = req.params;
+  const {
+    firstname,
+    lastname,
+    gender,
+    password,
+    birthdate,
+    location,
+    phone_number,
+  } = req.body;
+
+  try {
+    const updateUser = await userModel.update(
+      {
+        firstname: firstname,
+        lastname: lastname,
+        gender: gender,
+        password: password,
+        birthdate: birthdate,
+        location: location,
+        phone_number: phone_number,
+      },
+      {
+        where: { id: id },
+      }
+    );
+
+    return res.status(200).json({
+      status: "success",
+      message: "Updated successfully!",
+      updateUser,
+    });
+  } catch (error) {
+    console.error(error);
+    throw new Error("Error in updating profile");
+  }
+};
+
 const verifyOTP = async (req, res) => {
   const { id } = req.params;
   const { email, otp } = req.body;
@@ -290,6 +329,7 @@ module.exports = {
   filterByGender,
   updateAdmin,
   updateUsername,
+  updateAllUserData,
   updateProfileImg,
   verifyOTP,
 };
