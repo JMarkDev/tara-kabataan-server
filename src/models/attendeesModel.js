@@ -14,6 +14,10 @@ const Attendees = sequelize.define(
     user_id: {
       type: DataTypes.INTEGER,
       allowNull: false,
+      references: {
+        model: "users", // Name of the referenced table
+        key: "id", // Name of the referenced column
+      },
     },
     event_id: {
       type: DataTypes.INTEGER,

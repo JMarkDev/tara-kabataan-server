@@ -76,16 +76,54 @@ const allAttendeesByEventID = async (req, res) => {
   const { event_id } = req.params;
 
   try {
+    // Get all attendees for the event
     const getAttendees = await attendeesModel.findAll({
       where: { event_id: event_id },
     });
 
-    return res.status(200).json(getAttendees);
+    // Extract user IDs from attendees
+    const attendeeUserIds = getAttendees.map((attendee) => attendee.user_id);
+
+    // Get details for each user
+    const getUserDetails = await userModel.findAll({
+      where: { id: attendeeUserIds },
+    });
+
+    // Combine attendee data with user details
+    const attendeesWithDetails = getAttendees.map((attendee) => {
+      const userDetails = getUserDetails.find(
+        (user) => user.id === attendee.user_id
+      );
+      return {
+        attendee_name: userDetails.attendee_name, // Assuming user's name is stored in the userModel
+        location: userDetails.location,
+        phone_number: userDetails.phone_number,
+        birthdate: userDetails.birthdate,
+        ...attendee.toJSON(), // Include other attendee details
+      };
+    });
+
+    return res.status(200).json(attendeesWithDetails);
   } catch (error) {
     console.error(error);
     return res.status(500).json({ Error: "Get all attendees error in server" });
   }
 };
+
+// const allAttendeesByEventID = async (req, res) => {
+//   const { event_id } = req.params;
+
+//   try {
+//     const getAttendees = await attendeesModel.findAll({
+//       where: { event_id: event_id },
+//     });
+
+//     return res.status(200).json(getAttendees);
+//   } catch (error) {
+//     console.error(error);
+//     return res.status(500).json({ Error: "Get all attendees error in server" });
+//   }
+// };
 
 const userJoinEvents = async (req, res) => {
   const { user_id } = req.params;
