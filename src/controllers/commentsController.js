@@ -35,7 +35,6 @@ const addComments = async (req, res) => {
             `./uploads/${file.filename}`,
             `./uploads/${newFileName}`
           );
-          console.log("Uploaded Success");
           imageFileNames.push(newFileName);
         } catch (err) {
           console.error("Error renaming/uploading file:", err);
@@ -53,7 +52,10 @@ const addComments = async (req, res) => {
       created_at: sequelize.literal(`'${formattedDate}'`),
     });
 
-    return res.status(200).json(postcomment);
+    return res.status(200).json({
+      status: "success",
+      postcomment,
+    });
   } catch (error) {
     console.error(error);
     return res.status(500).json({ Error: "Add comments error in server" });
