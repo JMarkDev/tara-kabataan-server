@@ -236,7 +236,7 @@ const updateAllUserData = async (req, res) => {
         password: password,
         birthdate: birthdate,
         location: location,
-        phone_number: phone_number,
+        phone_number: `+ ${phone_number}`,
       },
       {
         where: { id: id },
