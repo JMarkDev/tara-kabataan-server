@@ -18,6 +18,7 @@ const archiveRoute = require("./src/routes/archiveRoute");
 const chatbotRoute = require("./src/routes/chatbotRoute");
 const attendeesRoute = require("./src/routes/attendeesRoute");
 const commentRoute = require("./src/routes/commentsRoute");
+const analyticsRoute = require("./src/routes/analitycsRoute");
 
 // Middleware setup
 app.use(cors());
@@ -44,6 +45,7 @@ app.use("/archive", archiveRoute);
 app.use("/chatbot", chatbotRoute);
 app.use("/attendees", attendeesRoute);
 app.use("/comment", commentRoute);
+app.use("/analytics", analyticsRoute);
 
 // Server setup
 const server = http.createServer(app);

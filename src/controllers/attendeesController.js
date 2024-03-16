@@ -49,10 +49,14 @@ const addAttendees = async (req, res) => {
       created_at: sequelize.literal(`'${formattedDate}'`),
     });
 
+    const updatePhoneNumber = phone_number.startsWith("+")
+      ? phone_number
+      : `+ ${phone_number}`;
+
     const updateUser = await userModel.update(
       {
         birthdate: birthdate,
-        phone_number: "+" + phone_number,
+        phone_number: updatePhoneNumber,
         location: location,
       },
       {
@@ -110,21 +114,6 @@ const allAttendeesByEventID = async (req, res) => {
   }
 };
 
-// const allAttendeesByEventID = async (req, res) => {
-//   const { event_id } = req.params;
-
-//   try {
-//     const getAttendees = await attendeesModel.findAll({
-//       where: { event_id: event_id },
-//     });
-
-//     return res.status(200).json(getAttendees);
-//   } catch (error) {
-//     console.error(error);
-//     return res.status(500).json({ Error: "Get all attendees error in server" });
-//   }
-// };
-
 const userJoinEvents = async (req, res) => {
   const { user_id } = req.params;
   try {
@@ -156,25 +145,9 @@ const getAttendeeDetails = async (req, res) => {
   }
 };
 
-// const getAllEventsJoined = async (req, res) => {
-//   const { user_id } = req.params;
-//   try {
-//     const getAllEvents = await attendeesModel.findAll({
-//       where: { user_id: user_id },
-//     });
-//     return res.status(200).json(getAllEvents);
-//   } catch (error) {
-//     console.error(error);
-//     return res
-//       .status(500)
-//       .json({ Error: "Get all events join error in server" });
-//   }
-// };
-
 module.exports = {
   addAttendees,
   allAttendeesByEventID,
   userJoinEvents,
   getAttendeeDetails,
-  //   getAllEventsJoined
 };
