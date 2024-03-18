@@ -43,26 +43,14 @@ const Attendees = sequelize.define(
       type: DataTypes.STRING(50),
       allowNull: false,
     },
-    // birthdate: {
-    //   type: DataTypes.DATE,
-    //   allowNull: false,
-    // },
     attendee_email: {
       type: DataTypes.STRING(50),
       allowNull: false,
     },
-    // phone_number: {
-    //   type: DataTypes.STRING(50),
-    //   allowNull: false,
-    // },
     registration_time: {
       type: DataTypes.DATE,
       allowNull: false,
     },
-    // location: {
-    //   type: DataTypes.STRING(255),
-    //   allowNull: false,
-    // },
     payment_method: {
       type: DataTypes.STRING(50),
       allowNull: false,
@@ -75,10 +63,6 @@ const Attendees = sequelize.define(
       type: DataTypes.INTEGER,
       allowNull: true,
     },
-    // status: {
-    //     type: DataTypes.STRING(50),
-    //     allowNull: true
-    // },
     created_at: {
       type: DataTypes.DATE,
       allowNull: false,

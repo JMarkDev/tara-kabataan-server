@@ -2,7 +2,7 @@ const sequelize = require("../configs/database");
 const attendeesModel = require("../models/attendeesModel");
 const userModel = require("../models/userModel");
 const eventModel = require("../models/eventModel");
-const { json } = require("body-parser");
+const { Op } = require("sequelize");
 
 const fetchTotals = async (req, res) => {
   try {
@@ -57,6 +57,98 @@ const fetchTotals = async (req, res) => {
   }
 };
 
+const getAttendeesYearly = async (req, res) => {
+  const { year } = req.params;
+  const events = await eventModel.findAll();
+
+  const months = [
+    "Jan",
+    "Feb",
+    "Mar",
+    "Apr",
+    "May",
+    "Jun",
+    "Jul",
+    "Aug",
+    "Sep",
+    "Oct",
+    "Nov",
+    "Dec",
+  ];
+
+  try {
+    const totalAttendees = [];
+
+    for (const month of months) {
+      const monthlyCounts = { month };
+
+      for (const event of events) {
+        const count = await attendeesModel.count({
+          where: {
+            [Op.and]: [
+              sequelize.where(
+                sequelize.fn("YEAR", sequelize.col("created_at")),
+                year
+              ),
+              sequelize.where(
+                sequelize.fn("MONTH", sequelize.col("created_at")),
+                months.indexOf(month) + 1
+              ),
+              { event_id: event.id },
+            ],
+          },
+        });
+
+        monthlyCounts[event.event_title] = count;
+      }
+
+      totalAttendees.push(monthlyCounts);
+    }
+
+    return res.json(totalAttendees);
+  } catch (error) {
+    return res.status(500).json({ message: error.message });
+  }
+};
+
+const getUserGender = async (req, res) => {
+  try {
+    // Array of genders to be included in the response
+    const genders = ["Male", "Female", "Non-Binary"];
+
+    // Fetch the counts for each gender from the database
+    const getUser = await userModel.findAll({
+      attributes: [
+        "gender",
+        [sequelize.fn("COUNT", sequelize.col("gender")), "totalCount"],
+      ],
+      where: {
+        status: "verified",
+        gender: genders, // Include only the specified genders
+      },
+      group: ["gender"],
+    });
+
+    // Create an object to store the counts for each gender
+    const genderCounts = {};
+    getUser.forEach((user) => {
+      genderCounts[user.gender] = parseInt(user.totalCount);
+    });
+
+    // Map over the hardcoded genders array to format the response
+    const formatData = genders.map((gender) => ({
+      gender: gender,
+      totalCount: genderCounts[gender] || 0, // If count not found, default to 0
+    }));
+
+    return res.status(200).json(formatData);
+  } catch (error) {
+    return res.status(500).json({ message: error.message });
+  }
+};
+
 module.exports = {
   fetchTotals,
+  getAttendeesYearly,
+  getUserGender,
 };
