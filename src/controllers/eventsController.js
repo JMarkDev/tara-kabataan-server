@@ -16,10 +16,10 @@ const addEvents = async (req, res) => {
     start_date,
     end_date,
     location,
-    attendance_count,
     event_type,
     price,
-    discount,
+    discount_date,
+    discount_price,
   } = req.body;
 
   try {
@@ -48,11 +48,13 @@ const addEvents = async (req, res) => {
       end_date: end_date,
       location: location,
       organizer_name: organizer_name,
-      attendance_count: attendance_count,
       event_type: event_type,
       price: price,
       status: "Upcoming",
-      discount: discount,
+      discount: {
+        discount_date: discount_date,
+        discount_price: discount_price,
+      },
       created_at: sequelize.literal(`'${formattedDate}'`),
     });
     return res.status(200).json({

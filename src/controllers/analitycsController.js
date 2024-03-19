@@ -135,13 +135,56 @@ const getUserGender = async (req, res) => {
       genderCounts[user.gender] = parseInt(user.totalCount);
     });
 
-    // Map over the hardcoded genders array to format the response
-    const formatData = genders.map((gender) => ({
-      gender: gender,
-      totalCount: genderCounts[gender] || 0, // If count not found, default to 0
-    }));
+    const allGenders = genders.map((gender) => {
+      const foundGender = getUser.find((user) => user.gender === gender);
 
-    return res.status(200).json(formatData);
+      if (foundGender) {
+        return foundGender;
+      } else {
+        return { gender: gender, totalCount: 0 };
+      }
+    });
+
+    return res.status(200).json(allGenders);
+  } catch (error) {
+    return res.status(500).json({ message: error.message });
+  }
+};
+
+const getAttendeesGenderByEventID = async (req, res) => {
+  const { event_id } = req.params;
+
+  try {
+    // Array of genders to be included in the response
+    const genders = ["Male", "Female", "Non-Binary"];
+
+    // Fetch the counts for each gender from the database
+    const getUser = await attendeesModel.findAll({
+      attributes: [
+        "gender",
+        [sequelize.fn("COUNT", sequelize.col("gender")), "totalCount"],
+      ],
+      group: ["gender"],
+      where: { event_id: event_id },
+    });
+
+    // Create an object to store the counts for each gender
+    const genderCounts = {};
+    getUser.forEach((user) => {
+      genderCounts[user.gender] = parseInt(user.totalCount);
+    });
+
+    const allGenders = genders.map((gender) => {
+      const foundGender = getUser.find((user) => user.gender === gender);
+
+      if (foundGender) {
+        return foundGender;
+      } else {
+        return { gender: gender, totalCount: 0 };
+      }
+    });
+
+    return res.status(200).json(allGenders);
   } catch (error) {
     return res.status(500).json({ message: error.message });
   }
@@ -151,4 +194,5 @@ module.exports = {
   fetchTotals,
   getAttendeesYearly,
   getUserGender,
+  getAttendeesGenderByEventID,
 };
