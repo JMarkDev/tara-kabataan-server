@@ -3,6 +3,23 @@ const date = require("date-and-time");
 const sequelize = require("../configs/database");
 const userModel = require("../models/userModel");
 
+const getAllAttendees = async (req, res) => {
+  try {
+    const attendees = await attendeesModel.findAll({
+      include: [
+        {
+          model: userModel, // Include the userModel
+          attributes: ["image"], // Specify the attributes you want to include from the userModel
+        },
+      ],
+    });
+    return res.status(200).json(attendees);
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({ Error: "Get all attendees error in server" });
+  }
+};
+
 const addAttendees = async (req, res) => {
   const {
     event_id,
@@ -146,6 +163,7 @@ const getAttendeeDetails = async (req, res) => {
 };
 
 module.exports = {
+  getAllAttendees,
   addAttendees,
   allAttendeesByEventID,
   userJoinEvents,

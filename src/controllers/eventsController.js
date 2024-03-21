@@ -116,7 +116,8 @@ const updateEvents = async (req, res) => {
     attendance_count,
     event_type,
     price,
-    discount,
+    discount_date,
+    discount_price,
   } = req.body;
 
   try {
@@ -154,7 +155,10 @@ const updateEvents = async (req, res) => {
         attendance_count: attendance_count,
         event_type: event_type,
         price: price,
-        discount: discount,
+        discount: {
+          discount_date: discount_date,
+          discount_price: discount_price,
+        },
         updated_at: sequelize.literal(`'${formattedDate}'`),
       },
       {

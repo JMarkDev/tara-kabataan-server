@@ -125,6 +125,7 @@ const getUserGender = async (req, res) => {
       where: {
         status: "verified",
         gender: genders, // Include only the specified genders
+        role: "user",
       },
       group: ["gender"],
     });
