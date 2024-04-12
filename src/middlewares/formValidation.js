@@ -1,4 +1,4 @@
-const { body, validationResult } = require('express-validator');
+const { body, validationResult } = require("express-validator");
 
 const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/; // Simple email regex for demonstration
 
@@ -7,113 +7,112 @@ const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/; // Simple email regex for demon
 
 const loginValidationRules = () => {
   return [
-    body('email')
-      .custom((value, { req }) => {
-        if (!value) {
-          throw new Error('Email is required');
-        }
+    body("email").custom((value, { req }) => {
+      if (!value) {
+        throw new Error("Email is required");
+      }
 
-        if (!value.match(emailRegex)) {
-          throw new Error('Enter a valid email address (e.g. sample@example.com).');
-        }
+      if (!value.match(emailRegex)) {
+        throw new Error(
+          "Enter a valid email address (e.g. sample@example.com)."
+        );
+      }
 
-        return true;
-      }),
-    body('password').notEmpty().withMessage('Password is required'),
+      return true;
+    }),
+    body("password").notEmpty().withMessage("Password is required"),
   ];
 };
 
 const registerValidationRules = () => {
   return [
-    body('firstname').notEmpty().withMessage('Firstame is required'),
-    body('lastname').notEmpty().withMessage('Lastname is required'),
-    body('email')
-      .custom((value, { req }) => {
-        if (!value) {
-          throw new Error('Email is required');
-        }
+    body("firstname").trim().notEmpty().withMessage("Firstame is required"),
+    body("lastname").trim().notEmpty().withMessage("Lastname is required"),
+    body("email").custom((value, { req }) => {
+      if (!value) {
+        throw new Error("Email is required");
+      }
 
-        if (!value.match(emailRegex)) {
-          throw new Error('Enter a valid email address (e.g. sample@example.com).');
-        }
+      if (!value.match(emailRegex)) {
+        throw new Error(
+          "Enter a valid email address (e.g. sample@example.com)."
+        );
+      }
 
-        return true;
-      }),
-    body('password')
-      .custom((value, { req }) => {
-        if (!value) {
-          throw new Error('Password is required');
-        }
+      return true;
+    }),
+    body("password").custom((value, { req }) => {
+      if (!value) {
+        throw new Error("Password is required");
+      }
 
-        if (value.length < 8) {
-          throw new Error('Password must be at least 8 characters');
-        }
+      if (value.length < 8) {
+        throw new Error("Password must be at least 8 characters");
+      }
 
-        return true;
-      }),
-      body('confirmPassword')
-      .custom((value, { req }) => {
-        if (!value) {
-          throw new Error('Confirm password is required');
-        }
+      return true;
+    }),
+    body("confirmPassword").custom((value, { req }) => {
+      if (!value) {
+        throw new Error("Confirm password is required");
+      }
 
-        if (value !== req.body.password) {
-          throw new Error('Passwords do not match');
-        }
+      if (value !== req.body.password) {
+        throw new Error("Passwords do not match");
+      }
 
-        return true;
-      }),
-      // .notEmpty().withMessage('Password is required')
-      // .isLength({min: 8}).withMessage('Password must be at least 8 characters'),
-    body('gender').notEmpty().withMessage('Select your gender.'),
+      return true;
+    }),
+    // .notEmpty().withMessage('Password is required')
+    // .isLength({min: 8}).withMessage('Password must be at least 8 characters'),
+    body("gender").notEmpty().withMessage("Select your gender."),
   ];
 };
 
 const passwordValidationRules = () => {
   return [
-    body('password')
-      .custom((value, { req }) => {
-        if (!value) {
-          throw new Error('Password is required');
-        }
+    body("password").custom((value, { req }) => {
+      if (!value) {
+        throw new Error("Password is required");
+      }
 
-        if (value.length < 8) {
-          throw new Error('Password must be at least 8 characters');
-        }
+      if (value.length < 8) {
+        throw new Error("Password must be at least 8 characters");
+      }
 
-        return true;
-      }),
-    body('confirmPassword')
-      .custom((value, { req }) => {
-        if (!value) {
-          throw new Error('Confirm password is required');
-        }
+      return true;
+    }),
+    body("confirmPassword").custom((value, { req }) => {
+      if (!value) {
+        throw new Error("Confirm password is required");
+      }
 
-        if (value !== req.body.password) {
-          throw new Error('Passwords do not match');
-        }
+      if (value !== req.body.password) {
+        throw new Error("Passwords do not match");
+      }
 
-        return true;
-      }),
+      return true;
+    }),
   ];
-}
+};
 
 const updateUsernameValidationRules = () => {
   return [
-    body('email')
-      .custom((value, { req }) => {
-        if (!value) {
-          throw new Error('Email is required');
-        }
+    body("email").custom((value, { req }) => {
+      if (!value) {
+        throw new Error("Email is required");
+      }
 
-        if (!value.match(emailRegex)) {
-          throw new Error('Enter a valid email address (e.g. sample@example.com).');
-        }
+      if (!value.match(emailRegex)) {
+        throw new Error(
+          "Enter a valid email address (e.g. sample@example.com)."
+        );
+      }
 
-        return true;
-      }),
-  ]
-}
+      return true;
+    }),
+  ];
+};
 
 const validateForm = (req, res, next) => {
   const errors = validationResult(req);
@@ -130,5 +129,5 @@ module.exports = {
   validateForm,
   registerValidationRules,
   passwordValidationRules,
-  updateUsernameValidationRules
+  updateUsernameValidationRules,
 };
