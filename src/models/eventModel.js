@@ -15,7 +15,7 @@ const Events = sequelize.define(
       allowNull: false,
     },
     event_description: {
-      type: DataTypes.STRING(250),
+      type: DataTypes.TEXT,
       allowNull: false,
     },
     event_category: {

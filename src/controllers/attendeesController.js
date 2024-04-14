@@ -127,7 +127,10 @@ const allAttendeesByEventID = async (req, res) => {
     return res.status(200).json(attendeesWithDetails);
   } catch (error) {
     console.error(error);
-    return res.status(500).json({ Error: "Get all attendees error in server" });
+    return res.status(500).json({
+      Error: "Get all attendees error in server",
+      error: error.message,
+    });
   }
 };
 
