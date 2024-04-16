@@ -4,6 +4,7 @@ const addTransaction = async (req, res) => {
   const {
     transaction_id,
     event_id,
+    user_id,
     email_address,
     amount,
     status,
@@ -14,6 +15,7 @@ const addTransaction = async (req, res) => {
     const addTransaction = await paymentModel.create({
       transaction_id: transaction_id,
       event_id: event_id,
+      user_id: user_id,
       email_address: email_address,
       amount: amount,
       status: status,
