@@ -10,6 +10,7 @@ const addTransaction = async (req, res) => {
     status,
     created_at,
   } = req.body;
+  console.log(transaction_id.body);
 
   try {
     const addTransaction = await paymentModel.create({
@@ -22,8 +23,9 @@ const addTransaction = async (req, res) => {
       created_at: created_at,
     });
 
+    console.log(addTransaction);
     return res.status(200).json({
-      status: "Success",
+      status: "success",
       addTransaction,
     });
   } catch (error) {

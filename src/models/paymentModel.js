@@ -7,10 +7,10 @@ const Payment = sequelize.define(
     transaction_id: {
       primaryKey: true,
       type: DataTypes.STRING(155),
-      allowNull: true,
+      allowNull: false,
     },
     event_id: {
-      type: DataTypes.INTEGER,
+      type: DataTypes.STRING(55),
       allowNull: false,
     },
     user_id: {
@@ -22,16 +22,16 @@ const Payment = sequelize.define(
       allowNull: true,
     },
     amount: {
-      type: DataTypes.INTEGER(10, 2),
-      allowNull: true,
+      type: DataTypes.STRING(55),
+      allowNull: false,
     },
     status: {
       type: DataTypes.STRING(55),
-      allowNull: true,
+      allowNull: false,
     },
     created_at: {
-      type: DataTypes.DATE,
-      allowNull: true,
+      type: DataTypes.STRING(55),
+      allowNull: false,
     },
   },
   {

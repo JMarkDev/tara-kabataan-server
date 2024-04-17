@@ -43,6 +43,13 @@ const addAttendees = async (req, res) => {
     const createdAt = new Date();
     const formattedDate = date.format(createdAt, "YYYY-MM-DD HH:mm:ss");
 
+    if (event_type !== "Free" && !payment_method) {
+      return res.status(400).json({
+        status: "error",
+        message: "Please select a payment method.",
+      });
+    }
+
     const checkAttendees = await attendeesModel.findOne({
       where: { event_id: event_id, user_id: user_id },
     });
