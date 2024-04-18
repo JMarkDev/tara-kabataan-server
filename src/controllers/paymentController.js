@@ -35,12 +35,13 @@ const addTransaction = async (req, res) => {
 };
 
 const getAllTrasactionByID = async (req, res) => {
-  const { id } = req.params;
+  const { user_id, event_id } = req.params;
 
   try {
     const getTransaction = await paymentModel.findAll({
       where: {
-        event_id: id,
+        user_id: user_id,
+        event_id: event_id,
       },
     });
 
