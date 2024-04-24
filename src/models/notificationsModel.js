@@ -22,6 +22,10 @@ const Notification = sequelize.define(
       type: DataTypes.STRING,
       allowNull: true,
     },
+    event_status: {
+      type: DataTypes.STRING,
+      allowNull: true,
+    },
     role: {
       type: DataTypes.STRING,
       allowNull: false,

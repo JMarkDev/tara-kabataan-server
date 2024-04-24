@@ -63,6 +63,7 @@ const addEvents = async (req, res) => {
 
     await nofificationController.addNotification({
       event_id: event_id,
+      event_status: "Upcoming",
       image: `/uploads/${newFileName}`,
       message: title,
       is_read: false,

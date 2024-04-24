@@ -9,4 +9,6 @@ router.put(
   nofificationController.updateIsRead
 );
 
+router.put("/update/event/:event_id", nofificationController.updateIsReadAdmin);
+
 module.exports = router;

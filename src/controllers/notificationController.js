@@ -3,6 +3,7 @@ const userModel = require("../models/userModel");
 
 const addNotification = async ({
   event_id,
+  event_status,
   image,
   message,
   is_read,
@@ -22,6 +23,7 @@ const addNotification = async ({
           user_id: user.id,
           role: user.role,
           event_id: event_id,
+          event_status: event_status,
           image: image,
           message: message,
           is_read: is_read,
@@ -186,6 +188,24 @@ const updateIsRead = async (req, res) => {
     throw err;
   }
 };
+const updateIsReadAdmin = async (req, res) => {
+  const { event_id } = req.params;
+  try {
+    const update = await notificationModel.update(
+      { is_read: true },
+      {
+        where: {
+          event_id: event_id,
+          role: "admin",
+        },
+      }
+    );
+
+    return res.status(200).json(update);
+  } catch (err) {
+    throw err;
+  }
+};
 
 module.exports = {
   addNotification,
@@ -193,4 +213,5 @@ module.exports = {
   getUserNotifications,
   getAdminNotifications,
   updateIsRead,
+  updateIsReadAdmin,
 };
