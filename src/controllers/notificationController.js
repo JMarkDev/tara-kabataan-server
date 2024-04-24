@@ -102,6 +102,7 @@ const getUserNotifications = async (req, res) => {
     const notifications = await notificationModel.findAll({
       where: {
         user_id: user_id,
+        role: "user",
       },
       order: [["created_at", "DESC"]],
     });
@@ -166,9 +167,30 @@ const getAdminNotifications = async (req, res) => {
   }
 };
 
+const updateIsRead = async (req, res) => {
+  const { user_id, event_id, role } = req.params;
+  try {
+    const update = await notificationModel.update(
+      { is_read: true },
+      {
+        where: {
+          user_id: user_id,
+          event_id: event_id,
+          role: role,
+        },
+      }
+    );
+
+    return res.status(200).json(update);
+  } catch (err) {
+    throw err;
+  }
+};
+
 module.exports = {
   addNotification,
   addNotificationAdmin,
   getUserNotifications,
   getAdminNotifications,
+  updateIsRead,
 };
