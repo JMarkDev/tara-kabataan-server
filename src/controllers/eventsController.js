@@ -3,6 +3,7 @@ const fs = require("fs");
 const date = require("date-and-time");
 const sequelize = require("../configs/database");
 const { Op } = require("sequelize");
+const nofificationController = require("../controllers/notificationController");
 
 const addEvents = async (req, res) => {
   const {
@@ -56,6 +57,16 @@ const addEvents = async (req, res) => {
         discount_price: discount_price,
       },
       created_at: sequelize.literal(`'${formattedDate}'`),
+    });
+
+    const event_id = event.id;
+
+    await nofificationController.addNotification({
+      event_id: event_id,
+      image: `/uploads/${newFileName}`,
+      message: title,
+      is_read: false,
+      created_at: start_date,
     });
     return res.status(200).json({
       status: "success",

@@ -19,6 +19,7 @@ const attendeesRoute = require("./src/routes/attendeesRoute");
 const commentRoute = require("./src/routes/commentsRoute");
 const analyticsRoute = require("./src/routes/analitycsRoute");
 const paymentRoute = require("./src/routes/paymentRoute");
+const notificationRoute = require("./src/routes/notificationRoute");
 
 // Middleware setup
 app.use(cors());
@@ -47,6 +48,7 @@ app.use("/attendees", attendeesRoute);
 app.use("/comment", commentRoute);
 app.use("/analytics", analyticsRoute);
 app.use("/payment", paymentRoute);
+app.use("/notifications", notificationRoute);
 
 // Server setup
 const server = http.createServer(app);

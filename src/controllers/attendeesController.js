@@ -2,6 +2,7 @@ const attendeesModel = require("../models/attendeesModel");
 const date = require("date-and-time");
 const sequelize = require("../configs/database");
 const userModel = require("../models/userModel");
+const nofificationController = require("../controllers/notificationController");
 
 const getAllAttendees = async (req, res) => {
   try {
@@ -73,9 +74,20 @@ const addAttendees = async (req, res) => {
       created_at: sequelize.literal(`'${formattedDate}'`),
     });
 
-    const updatePhoneNumber = phone_number.startsWith("+")
-      ? phone_number
-      : `+ ${phone_number}`;
+    await nofificationController.addNotificationAdmin({
+      user_id: user_id,
+      attendee_name: attendee_name,
+      message: event_name,
+      event_id: event_id,
+      role: "admin",
+      is_read: false,
+      created_at: event_date,
+    });
+
+    const updatePhoneNumber =
+      phone_number && phone_number.startsWith("+")
+        ? phone_number
+        : `+ ${phone_number}`;
 
     const updateUser = await userModel.update(
       {
