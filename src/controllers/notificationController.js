@@ -73,30 +73,6 @@ const addNotificationAdmin = async ({
   }
 };
 
-// const getAdminNotifications = async (req, res) => {
-//   try {
-//     // Find all verified users with role "user"
-//     const users = await userModel.findAll({
-//       where: {
-//         role: "user",
-//         status: "verified",
-//       },
-//     });
-
-//     const notifications = await notificationModel.findAll({
-//       where: {
-//         role: "admin",
-//       },
-//       order: [["created_at", "DESC"]],
-//     });
-
-//     return res.status(200).json(notifications);
-//   } catch (error) {
-//     console.error("Error fetching admin notifications:", error);
-//     return res.status(500).json({ error: error.message });
-//   }
-// };
-
 const getUserNotifications = async (req, res) => {
   try {
     const { user_id } = req.params;
@@ -134,8 +110,6 @@ const getAdminNotifications = async (req, res) => {
         const user = await userModel.findOne({
           where: {
             id: notification.user_id,
-            // role: "user",
-            // status: "verified",
           },
         });
 

@@ -2,6 +2,7 @@ const commentsModel = require("../models/commentsModel");
 const date = require("date-and-time");
 const sequelize = require("../configs/database");
 const fs = require("fs");
+const userModel = require("../models/userModel");
 
 const addComments = async (req, res) => {
   const { event_id, user_id, event_name, attendees_name, comment } = req.body;
@@ -66,10 +67,37 @@ const getCommentsByEventId = async (req, res) => {
   const { event_id } = req.params;
 
   try {
-    const getComments = await commentsModel.findAll({
+    // get all comments in event
+    const comments = await commentsModel.findAll({
       where: { event_id: event_id },
     });
-    return res.status(200).json(getComments);
+
+    const eventComments = await Promise.all(
+      comments.map(async (comment) => {
+        // get the image in the user table
+        const user = await userModel.findOne({
+          where: { id: comment.user_id },
+        });
+
+        if (user) {
+          return {
+            ...comment.toJSON(),
+            user: {
+              image: user.image,
+            },
+          };
+        } else {
+          return {
+            ...comment.toJSON(),
+            user: {
+              image: null,
+            },
+          };
+        }
+      })
+    );
+
+    return res.status(200).json(eventComments);
   } catch (error) {
     console.error(error);
     return res.status(500).json({ Error: "Get comments error in server" });
