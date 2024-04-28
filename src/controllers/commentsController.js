@@ -4,6 +4,7 @@ const sequelize = require("../configs/database");
 const fs = require("fs");
 const userModel = require("../models/userModel");
 const { v4: uuidv4 } = require("uuid");
+const notificationController = require("../controllers/notificationController");
 
 const addComments = async (req, res) => {
   const { event_id, user_id, event_name, attendees_name, comment } = req.body;
@@ -57,6 +58,16 @@ const addComments = async (req, res) => {
       created_at: formattedDate,
     });
 
+    await notificationController.addNotificationAdmin({
+      user_id: user_id,
+      attendee_name: attendees_name,
+      message: `Event feedback ${comment}`,
+      event_id: event_id,
+      role: "admin",
+      is_read: false,
+      created_at: formattedDate,
+    });
+
     return res.status(200).json({
       status: "success",
       postcomment,
@@ -68,8 +79,15 @@ const addComments = async (req, res) => {
 };
 
 const replyComments = async (req, res) => {
-  const { comment_id, event_id, user_id, event_name, attendees_name, comment } =
-    req.body;
+  const {
+    comment_id,
+    event_id,
+    user_id,
+    event_name,
+    attendees_name,
+    comment,
+    client_id,
+  } = req.body;
 
   try {
     const createdAt = new Date();
@@ -95,13 +113,23 @@ const replyComments = async (req, res) => {
 
     const postcomment = await commentsModel.create({
       comment_id: comment_id,
+      user_id: user_id,
       role: "admin",
       event_id: event_id,
-      user_id: user_id,
       event_name: event_name,
       attendees_name: attendees_name,
       comment: comment,
       image: imageFileNames.join(","),
+      created_at: formattedDate,
+    });
+
+    await notificationController.addNotificationAdmin({
+      user_id: client_id,
+      attendee_name: "Admin response:",
+      message: `Admin response: ${comment}`,
+      event_id: event_id,
+      role: "user",
+      is_read: false,
       created_at: formattedDate,
     });
 
