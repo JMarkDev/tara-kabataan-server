@@ -10,6 +10,14 @@ const Comments = sequelize.define(
       primaryKey: true,
       allowNull: false,
     },
+    comment_id: {
+      type: DataTypes.STRING(50),
+      allowNull: false,
+    },
+    role: {
+      type: DataTypes.STRING(50),
+      allowNull: false,
+    },
     event_id: {
       type: DataTypes.INTEGER,
       allowNull: false,
@@ -20,11 +28,11 @@ const Comments = sequelize.define(
     },
     event_name: {
       type: DataTypes.STRING(250),
-      allowNull: false,
+      allowNull: true,
     },
     attendees_name: {
       type: DataTypes.STRING(250),
-      allowNull: false,
+      allowNull: true,
     },
     comment: {
       type: DataTypes.STRING(450),
