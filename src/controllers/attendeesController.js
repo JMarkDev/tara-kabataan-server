@@ -43,6 +43,7 @@ const addAttendees = async (req, res) => {
   try {
     const createdAt = new Date();
     const formattedDate = date.format(createdAt, "YYYY-MM-DD HH:mm:ss");
+    const dateOnly = date.format(createdAt, "YYYY-MM-DD");
 
     if (event_type !== "Free" && !payment_method) {
       return res.status(400).json({
@@ -81,7 +82,7 @@ const addAttendees = async (req, res) => {
       event_id: event_id,
       role: "admin",
       is_read: false,
-      created_at: event_date,
+      created_at: dateOnly,
     });
 
     const updatePhoneNumber =
